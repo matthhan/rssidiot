@@ -1,5 +1,6 @@
 package rssidiot
 import rssidiot.Types._
+import scala.xml.NodeSeq
 
 class Article(val url:Url,val title:Title) {
 
@@ -18,5 +19,12 @@ class Article(val url:Url,val title:Title) {
     def read = this._read
     def markAsRead() {
         this._read = true
+    }
+}
+object Article {
+    def fromXmlItem(item:NodeSeq):Article = {
+        val title = (item \ "title").text
+        val url = (item \ "link").text
+        return new Article(url,title)
     }
 }

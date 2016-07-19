@@ -29,4 +29,10 @@ class ArticleSpec extends FlatSpec {
         a.markAsRead
         assert(a.read)
     }
+    it should "be parseable from an item xml node (acc. rss standard)" in {
+        val a = Article.fromXmlItem(<item><title>atitle</title><link>alink</link></item>)
+        assert (a != null)
+        assert (a.title == "atitle")
+        assert (a.url == "alink")
+    }
 }
