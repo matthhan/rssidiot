@@ -2,10 +2,10 @@ import org.scalatest.FlatSpec
 import rssidiot.Article
 
 class ArticleSpec extends FlatSpec {
-    val nullArticle = new Article(title=null,guid=null)
-    "Two Articles" should "be equal iff their guids are defined and equal" in {
-        val a = new Article(title="Hello",guid="blub")
-        val b = new Article(title="World",guid="blub")
+    val nullArticle = new Article(title=null,url=null)
+    "Two Articles" should "be equal iff their urls are defined and equal" in {
+        val a = new Article(title="Hello",url="blub")
+        val b = new Article(title="World",url="blub")
         assert (a == b)
         assert (!(a == nullArticle))
         assert (!(nullArticle == b))
@@ -13,7 +13,7 @@ class ArticleSpec extends FlatSpec {
         assert (!( null == a))
     }
     "An Article" should "be able to return a truncated version for display on screens" in {
-        val a = new Article(title="Loremipsumdolorsitametsedconsectetursadipiscingelit",guid="bam")
+        val a = new Article(title="Loremipsumdolorsitametsedconsectetursadipiscingelit",url="bam")
         assertResult(4) {a.printableString(4).length}
         val len = a.title.length
         assertResult(len) { a.printableString(1000).length }
@@ -21,11 +21,11 @@ class ArticleSpec extends FlatSpec {
         assertResult("(null)") { nullArticle.printableString(5) }
     }
     it should "be marked as unread initially" in {
-        var a = new Article(title="bla",guid="blub")
+        var a = new Article(title="bla",url="blub")
         assert(!a.read)
     }
     it should "be able to be marked as read" in {
-        var a = new Article(title="bla",guid="blub")
+        var a = new Article(title="bla",url="blub")
         a.markAsRead
         assert(a.read)
     }
