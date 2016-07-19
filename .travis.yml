@@ -2,4 +2,5 @@ language: scala
 scala: 
     - 2.11.8
     - 2.10.5
-after_success: ./run_tests.sh
+script: sbt ++$TRAVIS_SCALA_VERSION && ./run_tests.sh
+
