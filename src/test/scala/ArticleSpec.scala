@@ -20,4 +20,13 @@ class ArticleSpec extends FlatSpec {
         assertResult(a.title) { a.printableString(len) }
         assertResult("(null)") { nullArticle.printableString(5) }
     }
+    it should "be marked as unread initially" in {
+        var a = new Article(title="bla",guid="blub")
+        assert(!a.read)
+    }
+    it should "be able to be marked as read" in {
+        var a = new Article(title="bla",guid="blub")
+        a.markAsRead
+        assert(a.read)
+    }
 }
