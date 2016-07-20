@@ -1,0 +1,20 @@
+<rss>
+    <channel>
+        <title>Testing RSS Feed</title>
+        <item>
+            <title>New RSS Reader on the block</title>
+            <link>https://matthhan.github.io/rssidiot/index.html</link>
+            <guid isPermaLink="false">https://matthhan.github.io/rssidiot/index.html</guid>
+        </item>
+        <item>
+            <title>It's seriously really cool</title>
+            <link>https://matthhan.github.io/rssidiot/index.html</link>
+            <guid isPermaLink="false">https://matthhan.github.io/rssidiot/index.html</guid>
+        </item>
+        <item>
+            <title>Maybe try it out?</title>
+            <link>https://matthhan.github.io/rssidiot/index.html</link>
+            <guid isPermaLink="false">https://matthhan.github.io/rssidiot/index.html</guid>
+        </item>
+    </channel>
+</rss>
