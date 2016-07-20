@@ -2,7 +2,7 @@ package rssidiot
 import rssidiot.Types._
 import scala.xml.NodeSeq
 
-class Article(val url:Url,val title:Title) {
+class Article(val url:Url,val title:Title) extends JsonSerializable  {
 
 
     def printableString(length:Int = 75):String = 
@@ -21,10 +21,17 @@ class Article(val url:Url,val title:Title) {
     def markAsRead() {
         this._read = true
     }
+    private def quote(s:String) = "\"" + s + "\""
+    def jsonString() = "{" + 
+        "\"url\":" + quote(url) + ","+
+        "\"title\":" + quote(title) +
+    "}"
 }
 object Article {
     def fromXmlItem(item:NodeSeq):Article = {
-        val title = (item \ "title").text
+        //extract relevant data from the xml <item>
+        //filter out double quotes so that they do not disturb serialization
+        val title = (item \ "title").text.filter(x => x != '"')
         val url = (item \ "link").text
         return new Article(url,title)
     }

@@ -35,4 +35,9 @@ class ArticleSpec extends FlatSpec {
         assert (a.title == "atitle")
         assert (a.url == "alink")
     }
+    it should "Be able to serialize itself to valid Json" in {
+        //TODO:make sure to check that Json is valid
+        val a = new Article(title="Hello",url="blub")
+        a.jsonString
+    }
 }

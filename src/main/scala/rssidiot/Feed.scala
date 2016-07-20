@@ -1,8 +1,9 @@
 package rssidiot
 import rssidiot.Types._
-import rssidiot.collection.CircularBuffer
-class Feed(val url:Url,val name:String,val historySize:Int = 100) {
-    private val articleBuffer = new CircularBuffer[Article](historySize)
+import rssidiot.collection.SerializableCircularBuffer
+class Feed(val url:Url,val name:String,val historySize:Int = 100) extends JsonSerializable {
+    //TODO: Disallow quotes in url, name
+    private val articleBuffer = new SerializableCircularBuffer[Article](historySize)
     def articles() = articleBuffer.asArray
     def fetchNewArticles() {
         val items = WebContentFetcher.fetchContentFrom(this.url)
@@ -14,4 +15,12 @@ class Feed(val url:Url,val name:String,val historySize:Int = 100) {
     }
     def hasNewArticles =  !(this.articles.filter(_.unread).isEmpty)
     def unreadArticles = this.articles.filter(_.unread)
+    private def quote(s:String):String = "\"" + s + "\""
+    def jsonString():String = 
+        "{" + 
+          "\"url\":" +  quote(this.url) + ","  +
+          "\"name\":" + quote(this.name) + "," +
+          "\"historySize\":" + this.historySize + "," +
+          "\"articleBuffer\":" + this.articleBuffer.jsonString + 
+        "}"
 }
