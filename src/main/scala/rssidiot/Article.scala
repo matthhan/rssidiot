@@ -17,6 +17,7 @@ class Article(val url:Url,val title:Title) {
 
     private var _read = false
     def read = this._read
+    def unread = !this.read
     def markAsRead() {
         this._read = true
     }
