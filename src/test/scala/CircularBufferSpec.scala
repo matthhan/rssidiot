@@ -24,4 +24,22 @@ class CircularBufferSpec extends FlatSpec {
             buf.asArray.length
         }
     }
+    it should "be able to insert multiple elements at once" in {
+        val buf = new CircularBuffer[String](5)
+        val lis = List("a","b","c","d","e","f")
+        buf ++= lis
+        assertResult(Array("b","c","d","e","f")) {
+            buf.asArray
+        }
+    }
+    it should "Create arrays containing only as many elements as were actually inserted" in {
+        val buf = new CircularBuffer[Array[Int]](100)
+        for(i <- 1 to 40) {
+            buf += Array(i)
+        }
+        assertResult(40) {
+            println(buf.asArray)
+            buf.asArray.length
+        }
+    }
 }
