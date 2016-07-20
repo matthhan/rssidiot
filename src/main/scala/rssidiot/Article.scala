@@ -2,7 +2,10 @@ package rssidiot
 import rssidiot.Types._
 import scala.xml.NodeSeq
 
-class Article(val url:Url,val title:Title) extends JsonSerializable  {
+class Article(val url:Url,
+              val title:Title,
+              private var _read:Boolean = false) 
+    extends JsonSerializable  {
 
 
     def printableString(length:Int = 75):String = 
@@ -14,8 +17,6 @@ class Article(val url:Url,val title:Title) extends JsonSerializable  {
         if(that != null) this.url == that.url
         else false
 
-
-    private var _read = false
     def read = this._read
     def unread = !this.read
     def markAsRead() {
@@ -24,7 +25,8 @@ class Article(val url:Url,val title:Title) extends JsonSerializable  {
     private def quote(s:String) = "\"" + s + "\""
     def jsonString() = "{" + 
         "\"url\":" + quote(url) + ","+
-        "\"title\":" + quote(title) +
+        "\"title\":" + quote(title) + "," +
+        "\"read\":" + this.read + 
     "}"
 }
 object Article {
