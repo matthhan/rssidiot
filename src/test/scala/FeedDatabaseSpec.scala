@@ -4,7 +4,7 @@ import rssidiot.Feed
 
 class FeedDatabaseSpec extends FlatSpec {
     val db = new FeedDatabase
-    db += new  Feed(url= "http://www.reddit.com/.rss",name="Reddit frontpage")
+    db += new  Feed(url= "https://matthhan.github.io/rssidiot/test.rss",name="Test Feed")
     db += new  Feed(url= "http://www.tagesschau.de/xml/rss2",name="Tagesschau")
     db.fetchAllNewArticles
     "A Feed Database" should "be able to store several Feeds" in {
