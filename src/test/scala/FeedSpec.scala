@@ -19,4 +19,13 @@ class FeedSpec extends FlatSpec {
         val feed = new Feed(url="https://matthhan.github.io/rssidiot/test.rss",name="Testfeed")
         net.liftweb.json.parse(feed.jsonString)
     }
+    //This is necessary because otherwise, json serialization will be hard
+    it should "Not be able to have a title or url that contains double quotes" in {
+        intercept[IllegalArgumentException] {
+            val feed = new Feed(url="lol\"",name="defaultname")
+        }
+        intercept[IllegalArgumentException] {
+            val feed = new Feed(url="http://www.standardurl.com",name="\"defaul\"tname")
+        }
+    }
 }

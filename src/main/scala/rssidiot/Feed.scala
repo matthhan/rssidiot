@@ -2,7 +2,8 @@ package rssidiot
 import rssidiot.Types._
 import rssidiot.collection.SerializableCircularBuffer
 class Feed(val url:Url,val name:String,val historySize:Int = 100) extends JsonSerializable {
-    //TODO: Disallow quotes in url, name
+    require(!(name contains '"'))
+    require(!(url contains '"'))
     private val articleBuffer = new SerializableCircularBuffer[Article](historySize)
     def articles() = articleBuffer.asArray
     def fetchNewArticles() {
