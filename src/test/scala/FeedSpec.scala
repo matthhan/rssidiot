@@ -16,8 +16,7 @@ class FeedSpec extends FlatSpec {
         assertResult(List("New RSS Reader on the block", "Maybe try it out?")) { feed.unreadArticles.map(_.title) }
     }
     it should "be able to serialize itself into a valid json string" in {
-        //TODO validate with some json library
         val feed = new Feed(url="https://matthhan.github.io/rssidiot/test.rss",name="Testfeed")
-        feed.jsonString 
+        net.liftweb.json.parse(feed.jsonString)
     }
 }
