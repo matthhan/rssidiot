@@ -4,24 +4,20 @@ import scala.xml.NodeSeq
 
 class Article(val url:Url,
               val title:Title,
-              private var _read:Boolean = false) 
+              var read:Boolean = false) 
     extends JsonSerializable  {
-
 
     def printableString(length:Int = 75):String = 
         if(this.title != null) this.title.take(length) 
         else "(null)"
 
-
     def ==(that:Article):Boolean = 
         if(that != null) this.url == that.url
         else false
 
-    def read = this._read
     def unread = !this.read
-    def markAsRead() {
-        this._read = true
-    }
+    def markAsRead() {this.read = true}
+
     private def quote(s:String) = "\"" + s + "\""
     def jsonString() = "{" + 
         "\"url\":" + quote(url) + ","+
@@ -42,7 +38,7 @@ object Article {
         val obj = value.asInstanceOf[net.liftweb.json.JsonAST.JObject]
         val res = new Article(url = (obj \ "url").extract[String],
                               title = (obj \ "title").extract[String],
-                              _read  = (obj \ "read").extract[Boolean])
+                              read  = (obj \ "read").extract[Boolean])
         return res
     }
 }
