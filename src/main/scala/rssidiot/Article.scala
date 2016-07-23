@@ -24,6 +24,7 @@ class Article(val url:Url,
         "\"title\":" + quote(title) + "," +
         "\"read\":" + this.read + 
     "}"
+    override def toString():String = this.title
 }
 object Article {
     def fromXmlItem(item:NodeSeq):Article = {

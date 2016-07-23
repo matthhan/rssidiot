@@ -39,6 +39,7 @@ class Feed(val url:Url,
           "\"historySize\":" + this.historySize + "," +
           "\"articleBuffer\":" + this.articleBuffer.jsonString + 
         "}"
+    override def toString():String = this.name
 }
 
 object Feed {

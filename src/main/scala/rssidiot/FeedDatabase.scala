@@ -9,6 +9,7 @@ class FeedDatabase extends JsonSerializable{
     def +=(that:Feed) {this add that}
     def fetchAllNewArticles() { feeds foreach (_.fetchNewArticles) }
     def listFeedNames():List[String] = feeds map(_.name)
+    def listFeeds():List[Feed] = feeds
     def getUnreadArticlesForFeed(i:Int) = feeds(i).unreadArticles
 
     def saveTo(filename:String) { 
