@@ -37,4 +37,12 @@ object Article {
         val url = (item \ "link").text
         return new Article(url,title)
     }
+    def fromJsonElement(value:net.liftweb.json.JsonAST.JValue):Article = {
+        implicit val formats = net.liftweb.json.DefaultFormats
+        val obj = value.asInstanceOf[net.liftweb.json.JsonAST.JObject]
+        val res = new Article(url = (obj \ "url").extract[String],
+                              title = (obj \ "title").extract[String],
+                              _read  = (obj \ "read").extract[Boolean])
+        return res
+    }
 }

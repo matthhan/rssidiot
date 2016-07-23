@@ -1,6 +1,7 @@
 package rssidiot
 
 import java.io.PrintWriter
+import net.liftweb.json._
 
 class FeedDatabase extends JsonSerializable{
     private var feeds = List[Feed]()
@@ -21,8 +22,10 @@ object FeedDatabase {
         val str = scala.io.Source.fromFile(filename).mkString
         return FeedDatabase.parseFromJsonString(str)
     }
-    def parseFromJsonString(json:String):FeedDatabase = {
-        //TODO:implement
-        null
+    private def parseFromJsonString(json:String):FeedDatabase = {
+        val ast = net.liftweb.json.parse(json)
+        val res = new FeedDatabase()
+        ast.children.map(Feed.fromJsonElement(_)).foreach(res += _)
+        return res
     }
 }

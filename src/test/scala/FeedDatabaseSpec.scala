@@ -14,8 +14,8 @@ class FeedDatabaseSpec extends FlatSpec {
         net.liftweb.json.parse(db.jsonString)
     }
     "A Feed Database" should "be able to correctly save and load itself" in {
-        //db.saveTo("example.feeddb")
-        //val loadedDb = FeedDatabase.loadFrom("example.feeddb")
-        //assertResult(List("Tagesschau","Reddit frontpage")) { loadedDb.listFeedNames }
+        db.saveTo("example.feeddb")
+        val loadedDb = FeedDatabase.loadFrom("example.feeddb")
+        assertResult(List("Test Feed","Tagesschau")) { loadedDb.listFeedNames }
     }
 }
