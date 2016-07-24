@@ -12,6 +12,7 @@ import scalafx.scene.paint.Color._
 import scalafx.scene.control._
 import scalafx.scene.input.KeyEvent
 import scalafx.event.EventType
+import scalafx.event.ActionEvent
 import scalafx.scene.input.KeyCode
 import scalafx.geometry.Pos
 
@@ -34,27 +35,20 @@ object Gui extends JFXApp {
     })
     feedView.selectionModel().selectFirst
     
-    
-    stage = new PrimaryStage {
-        title = "Rssidiot"
-        width = 1024
-        height = 768
-        scene = new Scene {
-            root = new SplitPane {
-                items += (new VBox {
-                    children += feedView
-                    children += (new HBox {
-                        children += new Button("+")
-                        children += new Button("−")
-                        alignment = Pos.BaselineRight
-                    }).asInstanceOf[scalafx.scene.Node]
-                    alignment = Pos.BottomRight
-                }).asInstanceOf[scalafx.scene.Node]
-                items += articleView
-                dividerPositions = 0
-            }
-        }
-        filterEvent(KeyEvent.Any) { (event:KeyEvent) => 
+    val handleMinusButton = { _:ActionEvent =>
+        val selItem = feedView
+                        .selectionModel()
+                        .selectedItem()
+        db.remove(selItem)  
+        //TODO exceptions are being thrown when the list
+        //becomes Empty. Change SelectionModel Somehow?
+        val lis = feedView.items()
+        lis.remove(lis.indexOf(selItem))
+    }
+    val handlePlusButton = { _:ActionEvent =>
+        //TODO: add handling dialog to add a new Feed
+    }
+    val handleKeyPress = { (event:KeyEvent) => 
             if(event.eventType == KeyEvent.KeyPressed) {
                 event.code match {
                     //TODO: add functionality to open browser at article when
@@ -72,6 +66,38 @@ object Gui extends JFXApp {
                 }
             }
             event.consume
+    }
+
+
+    /*The .asInstanceOf[scalafx.scene.Node] is necessary
+    because the variables are otherwise not converted to 
+    the correct type. This appears to be a problem with
+    the scala Compiler.*/
+    stage = new PrimaryStage {
+        title = "Rssidiot"
+        width = 1024
+        height = 768
+        filterEvent(KeyEvent.Any)(handleKeyPress)
+        scene = new Scene {
+            root = new SplitPane {
+                items += (new VBox {
+                    children += feedView
+                    children += (new HBox {
+                        children += (new Button {
+                            text = "+"
+                            onAction = handlePlusButton
+                        }).asInstanceOf[scalafx.scene.Node]
+                        children += (new Button {
+                            text = "−"
+                            onAction = handleMinusButton
+                        }).asInstanceOf[scalafx.scene.Node]
+                        alignment = Pos.BaselineRight
+                    }).asInstanceOf[scalafx.scene.Node]
+                    alignment = Pos.BottomRight
+                }).asInstanceOf[scalafx.scene.Node]
+                items += articleView
+                dividerPositions = 0
+            }
         }
     }
 }
