@@ -5,11 +5,15 @@ import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.scene.Scene
 import scalafx.scene.control.SplitPane
+import scalafx.scene.layout.VBox
+import scalafx.scene.layout.HBox
+import scalafx.scene.layout.Priority
 import scalafx.scene.paint.Color._
 import scalafx.scene.control._
 import scalafx.scene.input.KeyEvent
 import scalafx.event.EventType
 import scalafx.scene.input.KeyCode
+import scalafx.geometry.Pos
 
 
 
@@ -18,7 +22,10 @@ object Gui extends JFXApp {
     //TODO: Change this to a more reasonable save file
     val db = FeedDatabase.loadFrom("example.feeddb")
     db.fetchAllNewArticles
-    val feedView = new ListView[Feed] { items() ++= db.listFeeds }
+    val feedView = new ListView[Feed] { 
+        items() ++= db.listFeeds 
+        vgrow = Priority.Always
+    }
     val articleView = new ListView[Article] 
     feedView.selectionModel().selectedItem.onChange( (_,_,newlySelectedFeed) => {
         articleView.items().clear
@@ -27,13 +34,23 @@ object Gui extends JFXApp {
     })
     feedView.selectionModel().selectFirst
     
+    
     stage = new PrimaryStage {
-        title = "ScalaFX Hello World"
+        title = "Rssidiot"
         width = 1024
         height = 768
         scene = new Scene {
             root = new SplitPane {
-                items.addAll(feedView,articleView)
+                items += (new VBox {
+                    children += feedView
+                    children += (new HBox {
+                        children += new Button("+")
+                        children += new Button("−")
+                        alignment = Pos.BaselineRight
+                    }).asInstanceOf[scalafx.scene.Node]
+                    alignment = Pos.BottomRight
+                }).asInstanceOf[scalafx.scene.Node]
+                items += articleView
                 dividerPositions = 0
             }
         }
