@@ -17,3 +17,5 @@ unmanagedJars in Compile += {
         val jh = ps("java.home")
           Attributed.blank(file(jh) / "lib/ext/jfxrt.jar")
 }
+
+scalacOptions += "-deprecation"
