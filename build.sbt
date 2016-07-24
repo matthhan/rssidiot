@@ -14,8 +14,8 @@ mainClass in Compile := Some("rssidiot.Gui")
 //But really, stylesheets should be bundled with the application
 unmanagedJars in Compile += {
       val ps = new sys.SystemProperties
-        val jh = ps("java.home")
-          Attributed.blank(file(jh) / "lib/ext/jfxrt.jar")
+      val jh = ps("java.home")
+      Attributed.blank(file(jh) / "lib/ext/jfxrt.jar")
 }
 
 scalacOptions += "-deprecation"
