@@ -11,7 +11,7 @@ class FeedDatabase extends JsonSerializable{
     def listFeedNames():List[String] = feeds map(_.name)
     def listFeeds():List[Feed] = feeds
     def getUnreadArticlesForFeed(i:Int) = feeds(i).unreadArticles
-
+    def remove(f:Feed) {feeds = feeds filterNot(_ == f)}
     def saveTo(filename:String) { 
         val str = this.jsonString
         new PrintWriter(filename) {write(str);close}
