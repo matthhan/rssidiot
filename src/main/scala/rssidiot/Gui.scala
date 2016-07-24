@@ -25,25 +25,28 @@ object Gui extends JFXApp {
     val db = FeedDatabase.loadFrom("example.feeddb")
     db.fetchAllNewArticles
 
+    val articleView = new ListView[Article] 
+    val handleFeedSelectionChange = (_:Any,_:Any,newlySelectedFeed:Feed) => {
+        if(newlySelectedFeed != null) {
+            articleView.items().clear
+            articleView.items() ++= newlySelectedFeed.unreadArticles
+            articleView.selectionModel().selectFirst
+        }
+    }
     val feedView = new ListView[Feed] { 
         items() ++= db.listFeeds 
         vgrow = Priority.Always
+        selectionModel().
+            selectedItem.
+            onChange(handleFeedSelectionChange)
+        selectionModel().selectFirst
     }
-    val articleView = new ListView[Article] 
-    feedView.selectionModel().selectedItem.onChange( (_,_,newlySelectedFeed) => {
-        articleView.items().clear
-        articleView.items() ++= newlySelectedFeed.unreadArticles
-        articleView.selectionModel().selectFirst
-    })
-    feedView.selectionModel().selectFirst
     
     val handleMinusButton = { _:ActionEvent =>
         val selItem = feedView
                         .selectionModel()
                         .selectedItem()
         db.remove(selItem)  
-        //TODO exceptions are being thrown when the list
-        //becomes Empty. Change SelectionModel Somehow?
         val lis = feedView.items()
         lis.remove(lis.indexOf(selItem))
     }
