@@ -58,10 +58,6 @@ object Gui extends JFXApp {
                 event.code match {
                     //TODO: add functionality to open browser at article when
                     //space is pressed
-                    //TODO: make sure the articleView and FeedView get into
-                    //Focus when their button is pressed
-                    //TODO make sure they scroll to ensure that the selected
-                    //Article/Feed is in view
                     case KeyCode.Space => println("spaaace")
                     case KeyCode.D => feedView.selectionModel().selectPrevious
                     case KeyCode.F => feedView.selectionModel().selectNext
@@ -69,6 +65,11 @@ object Gui extends JFXApp {
                     case KeyCode.K => articleView.selectionModel().selectPrevious
                     case _ =>
                 }
+                //TODO make this scroll lazily instead of eagerly
+                val selectedArticle = articleView .selectionModel() .selectedItem()
+                val selectedFeed = feedView .selectionModel() .selectedItem()
+                articleView.scrollTo(selectedArticle)
+                feedView.scrollTo(selectedFeed)
             }
             event.consume
     }
