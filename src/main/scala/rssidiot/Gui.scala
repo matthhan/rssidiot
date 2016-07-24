@@ -23,6 +23,7 @@ object Gui extends JFXApp {
     //TODO: Change this to a more reasonable save file
     val db = FeedDatabase.loadFrom("example.feeddb")
     db.fetchAllNewArticles
+
     val feedView = new ListView[Feed] { 
         items() ++= db.listFeeds 
         vgrow = Priority.Always
@@ -79,6 +80,7 @@ object Gui extends JFXApp {
         height = 768
         filterEvent(KeyEvent.Any)(handleKeyPress)
         scene = new Scene {
+            stylesheets = List("addedStyles.css")
             root = new SplitPane {
                 items += (new VBox {
                     children += feedView

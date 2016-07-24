@@ -19,3 +19,8 @@ unmanagedJars in Compile += {
 }
 
 scalacOptions += "-deprecation"
+
+//Use the finished package instead of the class files for "sbt run",
+//"sbt test" etc. This is useful because we want to put e.g. css and
+//images into the jar as well and tests would not see them otherwise
+exportJars:=true
