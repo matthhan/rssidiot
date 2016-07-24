@@ -1,6 +1,5 @@
 package rssidiot
 
-import java.io.PrintWriter
 import net.liftweb.json._
 
 class FeedDatabase extends JsonSerializable{
@@ -13,14 +12,13 @@ class FeedDatabase extends JsonSerializable{
     def getUnreadArticlesForFeed(i:Int) = feeds(i).unreadArticles
     def remove(f:Feed) {feeds = feeds filterNot(_ == f)}
     def saveTo(filename:String) { 
-        val str = this.jsonString
-        new PrintWriter(filename) {write(str);close}
+        Utility.writeStringToFile(s = this.jsonString,filename = filename)
     }
     def jsonString():String = "[" + this.feeds.map(_.jsonString).reduce((x,y) => x + "," + y) + "]"
 }
 object FeedDatabase {
     def loadFrom(filename:String):FeedDatabase = { 
-        val str = scala.io.Source.fromFile(filename).mkString
+        val str = Utility.readStringFromFile(filename)
         return FeedDatabase.parseFromJsonString(str)
     }
     private def parseFromJsonString(json:String):FeedDatabase = {
