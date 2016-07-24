@@ -10,14 +10,6 @@ libraryDependencies ++= Seq(
 
 mainClass in Compile := Some("rssidiot.Gui")
 
-//TODO Necessary bacause otherwise jsx stylesheets not found
-//But really, stylesheets should be bundled with the application
-unmanagedJars in Compile += {
-      val ps = new sys.SystemProperties
-      val jh = ps("java.home")
-      Attributed.blank(file(jh) / "lib/ext/jfxrt.jar")
-}
-
 scalacOptions += "-deprecation"
 
 //Use the finished package instead of the class files for "sbt run",

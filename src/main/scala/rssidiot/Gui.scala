@@ -20,6 +20,7 @@ import scalafx.geometry.Pos
 
 
 object Gui extends JFXApp {
+    JFXApp.userAgentStylesheet = "theme/theme.css"
     //TODO: Change this to a more reasonable save file
     val db = FeedDatabase.loadFrom("example.feeddb")
     db.fetchAllNewArticles
@@ -75,7 +76,7 @@ object Gui extends JFXApp {
     the correct type. This appears to be a problem with
     the scala Compiler.*/
     stage = new PrimaryStage {
-        title = "Rssidiot"
+        title = "rssidiot"
         width = 1024
         height = 768
         filterEvent(KeyEvent.Any)(handleKeyPress)
