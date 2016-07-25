@@ -1,10 +1,9 @@
 package rssidiot
 import rssidiot.Types._
-import rssidiot.collection.SerializableCircularBuffer
 class Feed(val url:Url,
            val name:String,
            val historySize:Int = 100,
-           private var articleBuffer:SerializableCircularBuffer[Article] = null) 
+           private var articleBuffer:ArticleBuffer = null) 
               extends JsonSerializable {
     require(!(name contains '"'))
     require(!(url contains '"'))
@@ -13,7 +12,7 @@ class Feed(val url:Url,
     }
     else {
         articleBuffer = 
-            new SerializableCircularBuffer[Article](historySize) 
+            new ArticleBuffer(historySize) 
     }
 
     def articles() = articleBuffer.asArray
@@ -50,7 +49,7 @@ object Feed {
         val res = new Feed(url = (obj \ "url").extract[String],
                            name = (obj \ "name").extract[String],
                            historySize = (obj \ "historySize").extract[Int])
-        val articleBuffer = SerializableCircularBuffer.
+        val articleBuffer = ArticleBuffer.
                                 fromJsonElement(obj \ "articleBuffer")
         return res    
     }

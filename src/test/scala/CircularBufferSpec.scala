@@ -1,7 +1,6 @@
 import org.scalatest.FlatSpec
 import rssidiot.collection.CircularBuffer
 import rssidiot.JsonSerializable
-import rssidiot.collection.SerializableCircularBuffer
 
 class CircularBufferSpec extends FlatSpec {
     "A CircularBuffer" should "store the last n inserted elements" in {
@@ -42,20 +41,5 @@ class CircularBufferSpec extends FlatSpec {
         assertResult(40) {
             buf.asArray.length
         }
-    }
-    it should "be able to serialize itself into a valid json string" in {
-        implicit class SerializableInt(x:Int) extends JsonSerializable {
-            def jsonString = x.toString
-        }
-        val buf = new SerializableCircularBuffer[SerializableInt](5)
-        buf.insert(1)
-        buf.insert(2)
-        buf.insert(3)
-        buf.insert(4)
-        buf.insert(5)
-        buf += 6
-        buf.insert(7)
-        buf.jsonString
-        //TODO: add json validation
     }
 }
