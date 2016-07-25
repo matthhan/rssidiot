@@ -131,13 +131,17 @@ object Gui extends JFXApp {
                 var spacePressed = false
                 event.code match {
                     case KeyCode.Space => spacePressed = true
-                    case KeyCode.D => feedView.selectionModel().selectPrevious
-                    //The third line in both of these cases should do nothing.
+                    //The third line in all of these cases should do nothing.
                     //But actually if the selected cell is the last selectable 
                     //cell and selectNext is called then the cell will stay
                     //selected, but not be highlighted anymore, which is a bug.
                     //Therefore, we always select the same line we just selected
                     //again, using the sm.select accessor
+                    case KeyCode.D => {
+                        val sm = feedView.selectionModel()
+                        sm.selectPrevious
+                        sm.select(sm.selectedIndex())
+                    }
                     case KeyCode.F => {
                         val sm = feedView.selectionModel()
                         sm.selectNext
@@ -148,7 +152,11 @@ object Gui extends JFXApp {
                         sm.selectNext
                         sm.select(sm.selectedIndex())
                     }
-                    case KeyCode.K => articleView.selectionModel().selectPrevious
+                    case KeyCode.K => {
+                        val sm = articleView.selectionModel()
+                        sm.selectPrevious
+                        sm.select(sm.selectedIndex())
+                    }
                     case _ =>
                 }
                 //TODO make this scroll lazily instead of eagerly
