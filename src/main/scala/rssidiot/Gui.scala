@@ -21,12 +21,18 @@ import scalafx.beans.property.ReadOnlyObjectProperty
 
 
 import java.net.URI
+import java.io.File
 
 
 object Gui extends JFXApp {
+    Utility.makeSureFolderExists(Utility.defaultDataFolder)
+    var db:FeedDatabase = null
+    if(new File(Utility.defaultFeedDatabaseFile).exists)
+        db = FeedDatabase.loadFrom(Utility.defaultFeedDatabaseFile)
+    else
+        db = new FeedDatabase
+    
     JFXApp.userAgentStylesheet = "theme/theme.css"
-    //TODO: Change this to a more reasonable save file
-    val db = FeedDatabase.loadFrom("example.feeddb")
     db.fetchAllNewArticles
 
     val makeArticleCells = { _:ListView[Article] =>
@@ -113,6 +119,7 @@ object Gui extends JFXApp {
         val newFeed = dialog.result()
         if(newFeed != null && newFeed.valid) {
             db.add(newFeed)
+            newFeed.fetchNewArticles
             feedView.items() += newFeed
         } else {
             //TODO: raise alert panel here
@@ -191,5 +198,6 @@ object Gui extends JFXApp {
                 dividerPositions = 0
             }
         }
+        onCloseRequest = {_:Any => db.saveTo(Utility.defaultFeedDatabaseFile)}
     }
 }
