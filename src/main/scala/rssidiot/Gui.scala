@@ -16,6 +16,9 @@ import scalafx.event.ActionEvent
 import scalafx.scene.input.KeyCode
 import scalafx.geometry.Pos
 
+import scalafx.beans.value.ObservableValue
+import scalafx.beans.property.ReadOnlyObjectProperty
+
 
 import java.net.URI
 
@@ -27,16 +30,29 @@ object Gui extends JFXApp {
     val db = FeedDatabase.loadFrom("example.feeddb")
     db.fetchAllNewArticles
 
-    val articleView = new ListView[Article] {
-        cellFactory = { _ =>
-            new ListCell[Article] {
-                item.onChange{ (_,_,article) =>
-                    if(article != null) {
-                        text = article.title
-                    } else {
-                        text = ""
-                    }
+    val makeArticleCells = { _:ListView[Article] =>
+        new ListCell[Article] {
+            val articleChangeListener = {(_:Any,_:Any,article:Article) =>
+                if(article != null) {
+                    text = article.title
+                    if(article.unread) style = "-fx-font-weight: bold"
+                    else style = "-fx-font-weight: regular"
+                } else {
+                    text = ""
                 }
+            }
+            item.onChange(articleChangeListener)
+        }
+    }
+
+    val articleView = new ListView[Article] {
+        cellFactory = makeArticleCells
+        selectionModel().selectedItem.onChange{ (_,_,newArticle) => 
+            if(newArticle != null) {
+                newArticle.markAsRead
+                //This line is here only to trigger a changeEvent
+                items().prepend(null)
+                items() = items().drop(1)
             }
         }
     }
