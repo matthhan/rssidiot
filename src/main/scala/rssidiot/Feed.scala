@@ -24,7 +24,7 @@ class Feed(val url:Url,
         insertIntoBuffer(downloadNewArticles)
     }
     private def downloadNewArticles:List[Article] = 
-        WebContentFetcher.fetchContentFrom(this.url)
+        (WebContentFetcher.fetchContentFrom(this.url) \\ "item")
             .map(Article.fromXmlItem)
             .toList
     private def insertIntoBuffer(newItems:List[Article]) { 
@@ -59,3 +59,5 @@ object Feed {
         return res    
     }
 }
+
+
