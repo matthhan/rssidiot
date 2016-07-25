@@ -40,6 +40,8 @@ class Feed(val url:Url,
           "\"articleBuffer\":" + this.articleBuffer.jsonString + 
         "}"
     override def toString():String = this.name
+    //TODO:implement
+    def valid() = true
 }
 
 object Feed {

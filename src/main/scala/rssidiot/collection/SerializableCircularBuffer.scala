@@ -1,6 +1,6 @@
 package rssidiot.collection
 import rssidiot.JsonSerializable
-
+//TODO: put in base package and just specialize to Article class
 class SerializableCircularBuffer[T <: JsonSerializable](size:Int)(implicit mf:Manifest[T]) extends CircularBuffer[T](size) {
         def jsonString = 
             if(this.asArray.isEmpty) 
