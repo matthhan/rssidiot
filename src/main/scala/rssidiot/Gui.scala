@@ -27,7 +27,19 @@ object Gui extends JFXApp {
     val db = FeedDatabase.loadFrom("example.feeddb")
     db.fetchAllNewArticles
 
-    val articleView = new ListView[Article] 
+    val articleView = new ListView[Article] {
+        cellFactory = { _ =>
+            new ListCell[Article] {
+                item.onChange{ (_,_,article) =>
+                    if(article != null) {
+                        text = article.title
+                    } else {
+                        text = ""
+                    }
+                }
+            }
+        }
+    }
     val handleFeedSelectionChange = (_:Any,_:Any,newlySelectedFeed:Feed) => {
         if(newlySelectedFeed != null) {
             articleView.items().clear
@@ -42,6 +54,14 @@ object Gui extends JFXApp {
             selectedItem.
             onChange(handleFeedSelectionChange)
         selectionModel().selectFirst
+        cellFactory = { _ =>
+            new ListCell[Feed] {
+                item.onChange{ (_,_,feed) =>
+                    if(feed != null) text = feed.name else text = ""
+                    
+                }
+            }
+        }
     }
     
     val handleMinusButton = { _:ActionEvent =>
@@ -85,6 +105,7 @@ object Gui extends JFXApp {
         }
 
     }
+    //TODO:SelectNext on the last feed does not work correctly (do nothing). Fix?
     val handleKeyPress = {(event:KeyEvent) => 
             if(event.eventType == KeyEvent.KeyPressed) {
                 var spacePressed = false
