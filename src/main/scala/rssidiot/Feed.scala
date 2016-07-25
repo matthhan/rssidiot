@@ -7,6 +7,8 @@ class Feed(val url:Url,
               extends JsonSerializable {
     require(!(name contains '"'))
     require(!(url contains '"'))
+    require(url != null)
+    require(name != null)
     require(!(url.isEmpty))
     require(!(name.isEmpty))
     require(historySize > 0)
@@ -20,15 +22,15 @@ class Feed(val url:Url,
 
     def articles() = articleBuffer.asArray
 
-    def fetchNewArticles() {
-        insertIntoBuffer(downloadNewArticles)
-    }
     private def downloadNewArticles:List[Article] = 
         (WebContentFetcher.fetchContentFrom(this.url) \\ "item")
             .map(Article.fromXmlItem)
             .toList
     private def insertIntoBuffer(newItems:List[Article]) { 
         this.articleBuffer ++= newItems.filter(article => !(this.articles contains article))
+    }
+    def fetchNewArticles() {
+        insertIntoBuffer(downloadNewArticles)
     }
 
 
