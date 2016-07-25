@@ -7,7 +7,6 @@ class FeedDatabase extends JsonSerializable{
     def add(feed:Feed) { 
         if(! (feeds contains feed)) {
             feeds = (feed :: feeds)
-            feed.fetchNewArticles
         }
     }
     def +=(that:Feed) {this add that}
