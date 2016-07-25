@@ -27,7 +27,7 @@ class Feed(val url:Url,
             .map(Article.fromXmlItem)
             .toList
     private def insertIntoBuffer(newItems:List[Article]) { 
-        this.articleBuffer ++= newItems.filter(article => !(this.articles contains article))
+        newItems.foreach(a => if(!(this.articles contains a)) articleBuffer += a)
     }
     def fetchNewArticles() {
         insertIntoBuffer(downloadNewArticles)
