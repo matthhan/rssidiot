@@ -55,9 +55,8 @@ object Feed {
         val obj = value.asInstanceOf[net.liftweb.json.JsonAST.JObject] 
         val res = new Feed(url = (obj \ "url").extract[String],
                            name = (obj \ "name").extract[String],
-                           historySize = (obj \ "historySize").extract[Int])
-        val articleBuffer = ArticleBuffer.
-                                fromJsonElement(obj \ "articleBuffer")
+                           historySize = (obj \ "historySize").extract[Int],
+                           articleBuffer = ArticleBuffer.fromJsonElement(obj \ "articleBuffer"))
         return res    
     }
 }
