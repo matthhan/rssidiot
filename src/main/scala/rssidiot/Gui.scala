@@ -73,7 +73,6 @@ object Gui extends JFXApp {
             new ListCell[Feed] {
                 item.onChange{ (_,_,feed) =>
                     if(feed != null) text = feed.name else text = ""
-                    
                 }
             }
         }
@@ -120,21 +119,34 @@ object Gui extends JFXApp {
         }
 
     }
-    //TODO:SelectNext on the last feed does not work correctly (do nothing). Fix?
     val handleKeyPress = {(event:KeyEvent) => 
             if(event.eventType == KeyEvent.KeyPressed) {
                 var spacePressed = false
                 event.code match {
                     case KeyCode.Space => spacePressed = true
                     case KeyCode.D => feedView.selectionModel().selectPrevious
-                    case KeyCode.F => feedView.selectionModel().selectNext
-                    case KeyCode.J => articleView.selectionModel().selectNext
+                    //The third line in both of these cases should do nothing.
+                    //But actually if the selected cell is the last selectable 
+                    //cell and selectNext is called then the cell will stay
+                    //selected, but not be highlighted anymore, which is a bug.
+                    //Therefore, we always select the same line we just selected
+                    //again, using the sm.select accessor
+                    case KeyCode.F => {
+                        val sm = feedView.selectionModel()
+                        sm.selectNext
+                        sm.select(sm.selectedIndex())
+                    }
+                    case KeyCode.J => {
+                        val sm = articleView.selectionModel()
+                        sm.selectNext
+                        sm.select(sm.selectedIndex())
+                    }
                     case KeyCode.K => articleView.selectionModel().selectPrevious
                     case _ =>
                 }
                 //TODO make this scroll lazily instead of eagerly
-                val selectedArticle = articleView .selectionModel() .selectedItem()
-                val selectedFeed = feedView .selectionModel() .selectedItem()
+                val selectedArticle = articleView.selectionModel().selectedItem()
+                val selectedFeed = feedView.selectionModel().selectedItem()
                 articleView.scrollTo(selectedArticle)
                 feedView.scrollTo(selectedFeed)
 
