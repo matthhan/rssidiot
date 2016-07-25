@@ -4,7 +4,12 @@ import net.liftweb.json._
 
 class FeedDatabase extends JsonSerializable{
     private var feeds = List[Feed]()
-    def add(feed:Feed) { if(! (feeds contains feed)) feeds = (feed :: feeds)}
+    def add(feed:Feed) { 
+        if(! (feeds contains feed)) {
+            feeds = (feed :: feeds)
+            feed.fetchNewArticles
+        }
+    }
     def +=(that:Feed) {this add that}
     def fetchAllNewArticles() { feeds foreach (_.fetchNewArticles) }
     def listFeedNames():List[String] = feeds map(_.name)

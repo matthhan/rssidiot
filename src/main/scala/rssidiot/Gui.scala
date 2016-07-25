@@ -4,17 +4,18 @@ import scalafx.Includes._
 import scalafx.application.JFXApp
 import scalafx.application.JFXApp.PrimaryStage
 import scalafx.scene.Scene
-import scalafx.scene.control.SplitPane
 import scalafx.scene.layout.VBox
 import scalafx.scene.layout.HBox
 import scalafx.scene.layout.Priority
 import scalafx.scene.paint.Color._
 import scalafx.scene.control._
+import scalafx.scene.control.ButtonBar.ButtonData
 import scalafx.scene.input.KeyEvent
 import scalafx.event.EventType
 import scalafx.event.ActionEvent
 import scalafx.scene.input.KeyCode
 import scalafx.geometry.Pos
+
 
 import java.net.URI
 
@@ -22,6 +23,7 @@ import java.net.URI
 object Gui extends JFXApp {
     JFXApp.userAgentStylesheet = "theme/theme.css"
     //TODO: Change this to a more reasonable save file
+    //TODO: Make unread feeds and articles appear in boldface
     val db = FeedDatabase.loadFrom("example.feeddb")
     db.fetchAllNewArticles
 
@@ -51,7 +53,37 @@ object Gui extends JFXApp {
         lis.remove(lis.indexOf(selItem))
     }
     val handlePlusButton = { _:ActionEvent =>
-        //TODO: add handling dialog to add a new Feed
+        val dialog = new Dialog[Feed]{
+            initOwner(stage) 
+            title = "Feed Creation"
+            headerText = "To create a new Feed, specify its Title and URL."
+            val titleField = new TextField {
+                    promptText = "Title"
+            }
+            val urlField = new TextField {
+                    promptText = "URL"
+            }
+            dialogPane().content = new VBox {
+                children += titleField
+                children += urlField
+            }
+            dialogPane().buttonTypes += new ButtonType("Confirm", ButtonData.OKDone)
+            dialogPane().buttonTypes += ButtonType.Cancel
+            resultConverter = { button =>
+                if(button.buttonData == ButtonData.OKDone)
+                    new Feed(name = titleField.text(),url = urlField.text())
+                else null
+            }
+        }
+        dialog.showAndWait()
+        val newFeed = dialog.result()
+        if(newFeed != null && newFeed.valid) {
+            db.add(newFeed)
+            feedView.items() += newFeed
+        } else {
+            //TODO: raise alert panel here
+        }
+
     }
     val handleKeyPress = {(event:KeyEvent) => 
             if(event.eventType == KeyEvent.KeyPressed) {
