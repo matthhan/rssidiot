@@ -7,6 +7,9 @@ class Feed(val url:Url,
               extends JsonSerializable {
     require(!(name contains '"'))
     require(!(url contains '"'))
+    require(!(url.isEmpty))
+    require(!(name.isEmpty))
+    require(historySize > 0)
     if(articleBuffer != null) {
         require(articleBuffer.size == this.historySize)
     }
@@ -41,8 +44,7 @@ class Feed(val url:Url,
           "\"historySize\":" + this.historySize + "," +
           "\"articleBuffer\":" + this.articleBuffer.jsonString + 
         "}"
-    //TODO:implement
-    def valid() = true
+    def valid() = (articleBuffer.asArray.length > 0) || (downloadNewArticles.length > 0) 
 }
 
 object Feed {
