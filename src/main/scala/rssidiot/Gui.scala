@@ -26,7 +26,6 @@ import java.net.URI
 object Gui extends JFXApp {
     JFXApp.userAgentStylesheet = "theme/theme.css"
     //TODO: Change this to a more reasonable save file
-    //TODO: Make unread feeds and articles appear in boldface
     val db = FeedDatabase.loadFrom("example.feeddb")
     db.fetchAllNewArticles
 
