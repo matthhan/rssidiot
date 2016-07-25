@@ -18,13 +18,16 @@ class Feed(val url:Url,
     def articles() = articleBuffer.asArray
 
     def fetchNewArticles() {
-        val items = WebContentFetcher.fetchContentFrom(this.url)
-        val newArticles = items.map(Article.fromXmlItem)
-        val oldArticles = this.articles
-        newArticles.foreach(article => 
-            if (! (oldArticles contains article)) this.articleBuffer += article
-        )
+        insertIntoBuffer(downloadNewArticles)
     }
+    private def downloadNewArticles:List[Article] = 
+        WebContentFetcher.fetchContentFrom(this.url)
+            .map(Article.fromXmlItem)
+            .toList
+    private def insertIntoBuffer(newItems:List[Article]) { 
+        this.articleBuffer ++= newItems.filter(article => !(this.articles contains article))
+    }
+
 
     def hasNewArticles =  !(this.articles.filter(_.unread).isEmpty)
 
