@@ -3,10 +3,16 @@ import rssidiot.Types._
 import scala.xml.NodeSeq
 
 class Article(val url:Url,
-              val title:Title,
+              private val _title:Title,
               var read:Boolean = false) 
     extends JsonSerializable  {
+    require(!(url contains '"'))
+    require(url != null)
+    require(_title != null)
+    require(url != "")
+    require(_title != "")
 
+    def title() = this._title.filter(_ != '"')
     def ==(that:Article):Boolean = 
         if(that != null) this.url == that.url
         else false
@@ -33,7 +39,7 @@ object Article {
         implicit val formats = net.liftweb.json.DefaultFormats
         val obj = value.asInstanceOf[net.liftweb.json.JsonAST.JObject]
         val res = new Article(url = (obj \ "url").extract[String],
-                              title = (obj \ "title").extract[String],
+                              _title = (obj \ "title").extract[String],
                               read  = (obj \ "read").extract[Boolean])
         return res
     }
