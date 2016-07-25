@@ -35,7 +35,7 @@ object Gui extends JFXApp {
                 if(article != null) {
                     text = article.title
                     if(article.unread) style = "-fx-font-weight: bold"
-                    else style = "-fx-font-weight: regular"
+                    else style = "-fx-font-weight: normal"
                 } else {
                     text = ""
                 }
