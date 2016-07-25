@@ -10,10 +10,4 @@ object Utility {
     }
     def readStringFromFile(filename:String):String = 
         scala.io.Source.fromFile(filename).mkString
-    def openWebbrowserAt(url:Url) {
-        if(Desktop.isDesktopSupported)
-            Desktop.getDesktop.browse(new URI(url))
-        else 
-            println("Desktop not supported")
-    }
 }

@@ -12,14 +12,6 @@ class ArticleSpec extends FlatSpec {
         assert (!( a == null))
         assert (!( null == a))
     }
-    "An Article" should "be able to return a truncated version for display on screens" in {
-        val a = new Article(title="Loremipsumdolorsitametsedconsectetursadipiscingelit",url="bam")
-        assertResult(4) {a.printableString(4).length}
-        val len = a.title.length
-        assertResult(len) { a.printableString(1000).length }
-        assertResult(a.title) { a.printableString(len) }
-        assertResult("(null)") { nullArticle.printableString(5) }
-    }
     it should "be marked as unread initially" in {
         var a = new Article(title="bla",url="blub")
         assert(!a.read)
