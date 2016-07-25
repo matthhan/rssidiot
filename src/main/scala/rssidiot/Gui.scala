@@ -16,7 +16,7 @@ import scalafx.event.ActionEvent
 import scalafx.scene.input.KeyCode
 import scalafx.geometry.Pos
 
-
+import java.net.URI
 
 
 object Gui extends JFXApp {
@@ -53,12 +53,11 @@ object Gui extends JFXApp {
     val handlePlusButton = { _:ActionEvent =>
         //TODO: add handling dialog to add a new Feed
     }
-    val handleKeyPress = { (event:KeyEvent) => 
+    val handleKeyPress = {(event:KeyEvent) => 
             if(event.eventType == KeyEvent.KeyPressed) {
+                var spacePressed = false
                 event.code match {
-                    //TODO: add functionality to open browser at article when
-                    //space is pressed
-                    case KeyCode.Space => println("spaaace")
+                    case KeyCode.Space => spacePressed = true
                     case KeyCode.D => feedView.selectionModel().selectPrevious
                     case KeyCode.F => feedView.selectionModel().selectNext
                     case KeyCode.J => articleView.selectionModel().selectNext
@@ -70,16 +69,22 @@ object Gui extends JFXApp {
                 val selectedFeed = feedView .selectionModel() .selectedItem()
                 articleView.scrollTo(selectedArticle)
                 feedView.scrollTo(selectedFeed)
+
+                if(spacePressed) {
+                    hostServices.showDocument(selectedArticle.url)
+                    Thread.sleep(300)
+                    stage.requestFocus
+                }
             }
             event.consume
-    }
-
+        }
 
     /*The .asInstanceOf[scalafx.scene.Node] is necessary
     because the variables are otherwise not converted to 
     the correct type. This appears to be a problem with
     the scala Compiler.*/
     stage = new PrimaryStage {
+        alwaysOnTop = true
         title = "rssidiot"
         width = 1024
         height = 768
