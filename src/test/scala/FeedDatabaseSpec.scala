@@ -8,7 +8,7 @@ class FeedDatabaseSpec extends FlatSpec {
     db += new  Feed(url= "http://www.tagesschau.de/xml/rss2",name="Tagesschau")
     db.fetchAllNewArticles
     "A Feed Database" should "be able to store several Feeds" in {
-        assertResult(2) {db.listFeedNames.length}
+        assertResult(2) {db.listFeeds.length}
     }
     "A Feed Database" should "be able to serialize itself into valid json" in {
         net.liftweb.json.parse(db.jsonString)
@@ -16,6 +16,6 @@ class FeedDatabaseSpec extends FlatSpec {
     "A Feed Database" should "be able to correctly save and load itself" in {
         db.saveTo("example.feeddb")
         val loadedDb = FeedDatabase.loadFrom("example.feeddb")
-        assertResult(List("Test Feed","Tagesschau")) { loadedDb.listFeedNames }
+        assertResult(List("Test Feed","Tagesschau")) { loadedDb.listFeeds.map(_.name) }
     }
 }

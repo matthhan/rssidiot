@@ -12,9 +12,7 @@ class FeedDatabase extends JsonSerializable{
     }
     def +=(that:Feed) {this add that}
     def fetchAllNewArticles() { feeds foreach (_.fetchNewArticles) }
-    def listFeedNames():List[String] = feeds map(_.name)
     def listFeeds():List[Feed] = feeds
-    def getUnreadArticlesForFeed(i:Int) = feeds(i).unreadArticles
     def remove(f:Feed) {feeds = feeds filterNot(_ == f)}
     def saveTo(filename:String) { 
         Utility.writeStringToFile(s = this.jsonString,filename = filename)
