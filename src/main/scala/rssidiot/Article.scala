@@ -13,10 +13,10 @@ class Article(val url:Url,
     require(_title != "")
 
     def title() = this._title.filter(_ != '"')
-    def ==(that:Article):Boolean = 
-        if(that != null) this.url == that.url
-        else false
-
+    override def equals(that:Any):Boolean = {
+        if(that == null || !that.isInstanceOf[Article]) false
+        else this.url == that.asInstanceOf[Article].url 
+    }
     def unread = !this.read
     def markAsRead() {this.read = true}
 
