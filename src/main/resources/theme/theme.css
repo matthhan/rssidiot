@@ -12,16 +12,12 @@
     -fx-font-smoothing-type: lcd;
 }
 
-
 .button {
     -fx-background-color: -background;
     -fx-text-fill: -text;
     -fx-alignment: CENTER;
     -fx-padding: 0.333333em 0.666667em 0.333333em 0.666667em;
 }
-
-
-
 
 .list-view {
     -fx-padding: 1;
@@ -41,4 +37,14 @@
 }
 .list-cell:selected  {
     -fx-background-color: -highlight;
+}
+
+.dialog-pane {
+    -fx-background-color: -background;
+}
+.dialog-pane .button {
+    -fx-border-color: -border;
+}
+.dialog-pane .text-field {
+    -fx-border-color: -border;
 }
