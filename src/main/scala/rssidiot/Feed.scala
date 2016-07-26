@@ -22,10 +22,13 @@ class Feed(val url:Url,
 
     def articles() = articleBuffer.asArray
 
-    private def downloadNewArticles:List[Article] = 
-        (WebContentFetcher.fetchContentFrom(this.url) \\ "item")
-            .map(Article.fromXmlItem)
-            .toList
+    private def downloadNewArticles:List[Article] = {
+        val content = WebContentFetcher.fetchContentFrom(this.url)
+        if(content == null) List[Article]()
+        else (content \\ "item")
+                .map(Article.fromXmlItem)
+                .toList
+    }
     private def insertIntoBuffer(newItems:List[Article]) { 
         newItems.foreach(a => if(!(this.articles contains a)) articleBuffer += a)
     }
@@ -46,7 +49,16 @@ class Feed(val url:Url,
           "\"historySize\":" + this.historySize + "," +
           "\"articleBuffer\":" + this.articleBuffer.jsonString + 
         "}"
-    def valid() = (articleBuffer.asArray.length > 0) || (downloadNewArticles.length > 0) 
+    def valid:Boolean = {
+        //A feed is valid if we have already downloaded articles for it successfully 
+        //or if we can do so now
+        try {
+            return (articleBuffer.asArray.length > 0) || (downloadNewArticles.length > 0) 
+        } catch {
+            //Something went wrong downloading new articles
+            case e:Exception => return false
+        }
+    }
 }
 
 object Feed {
