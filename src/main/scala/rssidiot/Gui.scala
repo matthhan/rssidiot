@@ -110,9 +110,13 @@ object Gui extends JFXApp {
             dialogPane().buttonTypes += new ButtonType("Confirm", ButtonData.OKDone)
             dialogPane().buttonTypes += ButtonType.Cancel
             resultConverter = { button =>
-                if(button.buttonData == ButtonData.OKDone)
-                    new Feed(name = titleField.text(),url = urlField.text())
-                else null
+                try {
+                    if(button.buttonData == ButtonData.OKDone)
+                        new Feed(name = titleField.text(),url = urlField.text())
+                    else null
+                } catch {
+                    case e:Exception => null
+                }
             }
         }
         dialog.showAndWait()
