@@ -25,9 +25,15 @@ class Feed(val url:Url,
     private def downloadNewArticles:List[Article] = {
         val content = WebContentFetcher.fetchContentFrom(this.url)
         if(content == null) List[Article]()
-        else (content \\ "item")
-                .map(Article.fromXmlItem)
-                .toList
+        else {
+            var items = content \\ "item"
+            //If no items found, check if we are maybe dealing with i
+            //an atom feed, which would use "entry", not "item" as tag
+            if(items.isEmpty) items = content \\ "entry"
+            return items
+                    .map(Article.fromXmlItem)
+                    .toList
+        }
     }
     private def insertIntoBuffer(newItems:List[Article]) { 
         newItems.foreach(a => if(!(this.articles contains a)) articleBuffer += a)
