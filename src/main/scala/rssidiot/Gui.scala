@@ -61,11 +61,10 @@ object Gui extends JFXApp {
             }
         }
     }
-    val handleFeedSelectionChange = (_:Any,_:Any,newlySelectedFeed:Feed) => {
+    val handleFeedSelectionChange:(Any,Any,Feed) => Unit = (_,_,newlySelectedFeed) =>  {
         if(newlySelectedFeed != null) {
             articleView.items().clear
             articleView.items() ++= newlySelectedFeed.unreadArticles
-            articleView.selectionModel().selectFirst
         }
     }
     val feedView = new ListView[Feed] { 
