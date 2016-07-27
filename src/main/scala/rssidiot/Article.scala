@@ -32,7 +32,9 @@ object Article {
         //extract relevant data from the xml <item>
         //filter out double quotes so that they do not disturb serialization
         val title = (item \ "title").text.filter(x => x != '"')
-        val url = (item \ "link").text
+        var url = (item \ "link").text
+        //Atom feeds like to store this as href Attribute
+        if(url == "") url = (item \ "link" \ "@href").text
         return new Article(url,title)
     }
     def fromJsonElement(value:net.liftweb.json.JsonAST.JValue):Article = {
