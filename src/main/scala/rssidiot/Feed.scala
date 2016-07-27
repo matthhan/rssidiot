@@ -11,38 +11,23 @@ class Feed(val url:QuotelessString,
     require(!(url.isEmpty))
     require(!(name.isEmpty))
     require(historySize > 0)
-    if(articleBuffer != null) {
-        require(articleBuffer.size == this.historySize)
-    }
-    else {
-        articleBuffer = 
-            new ArticleBuffer(historySize) 
-    }
 
-    def articles() = articleBuffer.asArray
+    if(articleBuffer != null) require(articleBuffer.size == this.historySize)
+    else articleBuffer = new ArticleBuffer(historySize) 
 
-    private def downloadNewArticles:List[Article] = {
-        val content = WebContentFetcher.fetchContentFrom(this.url)
-        if(content == null) List[Article]()
-        else {
-            var items = content \\ "item"
-            //If no items found, check if we are maybe dealing with i
-            //an atom feed, which would use "entry", not "item" as tag
-            if(items.isEmpty) items = content \\ "entry"
-            return items
-                    .map(Article.fromXmlItem)
-                    .toList
-        }
-    }
+    def articles = articleBuffer.asArray
+
+    private def downloadNewArticles:scala.xml.Elem = WebContentFetcher.fetchContentFrom(this.url)
+    private def parseArticles(xml:scala.xml.Elem) =
+        if(xml == null) List[Article]()
+        else 
+            //"item" is used in RSS feeds, "entry" is used in Atom feeds
+            ((xml \\ "item") ++ (xml \\ "entry")).map(Article.fromXmlItem).toList
+
     private def insertIntoBuffer(newItems:List[Article]) { 
         newItems.foreach(a => if(!(this.articles contains a)) articleBuffer += a)
     }
-    def fetchNewArticles() {
-        insertIntoBuffer(downloadNewArticles)
-    }
-
-
-    def hasNewArticles =  !(this.articles.filter(_.unread).isEmpty)
+    def fetchNewArticles() { insertIntoBuffer(parseArticles(downloadNewArticles)) }
 
     def unreadArticles = this.articles.filter(_.unread)
 
