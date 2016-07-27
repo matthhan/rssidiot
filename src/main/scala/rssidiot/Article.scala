@@ -34,7 +34,7 @@ class Article(val url:QuotelessString,
 object Article {
     def fromXmlItem(item:NodeSeq):Article = {
         //filter out double quotes so that they do not disturb serialization
-        val title = (item \ "title").text.filter(x => x != '"')
+        val title = (item \ "title").text
         var url = (item \ "link").text
         //Atom feeds like to store this as href Attribute
         if(url == "") url = (item \ "link" \ "@href").text
