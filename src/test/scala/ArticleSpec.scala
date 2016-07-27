@@ -5,9 +5,6 @@ class ArticleSpec extends FlatSpec {
     "Two Articles" should "be equal iff their urls are defined and equal" in {
         val a = new Article("blub","Hello")
         val b = new Article("blub","World")
-        println("equality " + (a.url == b.url))
-        println(a.url.s)
-        println(b.url.s)
         assert (a == b)
         assert (!( a == null))
         assert (!( null == a))
