@@ -12,22 +12,23 @@ object WebContentFetcher {
                     //Usually the case when we get HTML status code 503:
                     //Just try again after a while
                     case e:java.io.IOException => {
-                        Thread.sleep(500)
-                        System.err.println(e.getMessage)
+                        Thread.sleep(getWaitTime(url))
                     }
                 }
             }
             //Give up
             null
     }
+    private def getWaitTime(url:String) = url match {
+        case "https://www.reddit.com/.rss" => 2000
+        case _ => 100
+    }
     private def makeAttemptToDowloadString(url:String):String = {
-        System.err.println("Downloading from: " + url)
         try {
             return Source.fromURL(url).mkString
         } catch {
             //Just somehow unknown Url. We can really only give up in this case
             case e: java.net.UnknownHostException =>
-                System.err.println("Could not download from ${url}")
                 null
         }
 
@@ -37,7 +38,6 @@ object WebContentFetcher {
             XML.loadString(s)
         } catch{
             case e:org.xml.sax.SAXParseException => {
-                System.err.println("Could not parse received xml String: " + s)
                 null
             }
         }
