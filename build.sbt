@@ -10,5 +10,5 @@ libraryDependencies ++= Seq(
 
 mainClass in Compile := Some("rssidiot.Gui")
 
-scalacOptions += "-deprecation"
+scalacOptions ++= Seq("-deprecation","-feature")
 
