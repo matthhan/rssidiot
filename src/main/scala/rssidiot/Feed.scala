@@ -70,12 +70,12 @@ class Feed(val url:Url,
 
 object Feed {
     def fromJson(json:String):Feed = {
-        val value = JsonLibraryAdapter.parse(json)
+        val jsonObject = JsonLibraryAdapter.parse(json)
         val res = new Feed(
-            url = value.getAttribute[String]("url"),
-            name = value.getAttribute[String]("name"),
-            historySize = value.getAttribute[Int]("historySize"),
-            articleBuffer = ArticleBuffer.fromJson(value.getChild("articleBuffer").json)) 
+            url = jsonObject.getAttribute[String]("url"),
+            name = jsonObject.getAttribute[String]("name"),
+            historySize = jsonObject.getAttribute[Int]("historySize"),
+            articleBuffer = ArticleBuffer.fromJson(jsonObject.getChild("articleBuffer").json)) 
         return res    
     }
 }

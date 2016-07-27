@@ -39,10 +39,10 @@ object Article {
         return new Article(url,title)
     }
     def fromJson(json:String):Article = {
-        val value = JsonLibraryAdapter.parse(json)
-        val res = new Article(url = value.getAttribute[String]("url"),
-                              _title = value.getAttribute[String]("title"),
-                              read  = value.getAttribute[Boolean]("read"))
+        val jsonObject = JsonLibraryAdapter.parse(json)
+        val res = new Article(url = jsonObject.getAttribute[String]("url"),
+                              _title = jsonObject.getAttribute[String]("title"),
+                              read  = jsonObject.getAttribute[Boolean]("read"))
         return res
     }
 }

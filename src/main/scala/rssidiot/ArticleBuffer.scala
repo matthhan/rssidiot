@@ -18,10 +18,10 @@ class ArticleBuffer(size:Int) extends CircularBuffer[Article](size) {
 }
 object ArticleBuffer {
     def fromJson(json:String):ArticleBuffer = {
-        val value = JsonLibraryAdapter.parse(json)
-        val res = new ArticleBuffer(value.getAttribute[Int]("size"))
-        val arr = value.getChildren("content")
-        arr.children.map(a => Article.fromJson(a.json)).foreach(res += _)
+        val jsonObject = JsonLibraryAdapter.parse(json)
+        val res = new ArticleBuffer(jsonObject.getAttribute[Int]("size"))
+        val arr = jsonObject.getChild("content")
+        arr.children.map(_.json).map(Article.fromJson(_)).foreach(res += _)
         res
     }
 }

@@ -24,9 +24,9 @@ object FeedDatabase {
         return FeedDatabase.fromJson(str)
     }
     private def fromJson(json:String):FeedDatabase = {
-        val ast = JsonLibraryAdapter.parse(json)
         val res = new FeedDatabase()
-        ast.children.map(feedJson => Feed.fromJson(feedJson.json)).foreach(res += _)
+        val feedJsons = JsonLibraryAdapter.parse(json).children.map(_.json)
+        feedJsons.map(Feed.fromJson(_)).foreach(res += _)
         return res
     }
 }
