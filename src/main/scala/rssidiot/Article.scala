@@ -1,6 +1,7 @@
 package rssidiot
 import rssidiot.Types._
 import scala.xml.NodeSeq
+import rssidiot.JsonLibraryAdapter._
 
 class Article(val url:Url,
               private val _title:Title,
@@ -21,7 +22,7 @@ class Article(val url:Url,
     def markAsRead() {this.read = true}
 
     private def quote(s:String) = "\"" + s + "\""
-    def jsonString() = "{" + 
+    def json() = "{" + 
         "\"url\":" + quote(url) + ","+
         "\"title\":" + quote(title) + "," +
         "\"read\":" + this.read + 
@@ -37,7 +38,8 @@ object Article {
         if(url == "") url = (item \ "link" \ "@href").text
         return new Article(url,title)
     }
-    def fromJsonElement(value:net.liftweb.json.JsonAST.JValue):Article = {
+    def fromJson(json:String):Article = {
+        val value = JsonLibraryAdapter.parse(json)
         implicit val formats = net.liftweb.json.DefaultFormats
         val obj = value.asInstanceOf[net.liftweb.json.JsonAST.JObject]
         val res = new Article(url = (obj \ "url").extract[String],

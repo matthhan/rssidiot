@@ -17,7 +17,7 @@ class FeedSpec extends FlatSpec {
     }
     it should "be able to serialize itself into a valid json string" in {
         val feed = new Feed(url="https://matthhan.github.io/rssidiot/test.rss",name="Testfeed")
-        net.liftweb.json.parse(feed.jsonString)
+        net.liftweb.json.parse(feed.json)
     }
     //This is necessary because otherwise, json serialization will be hard
     it should "Not be able to have a title or url that contains double quotes" in {

@@ -27,7 +27,7 @@ class ArticleSpec extends FlatSpec {
     it should "Be able to serialize itself to valid Json" in {
         val a = new Article(_title="Hello",url="blub")
         //Make sure json is valid
-        net.liftweb.json.parse(a.jsonString)
+        net.liftweb.json.parse(a.json)
 
     }
 }

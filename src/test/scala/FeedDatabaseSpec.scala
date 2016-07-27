@@ -11,7 +11,7 @@ class FeedDatabaseSpec extends FlatSpec {
         assertResult(2) {db.listFeeds.length}
     }
     "A Feed Database" should "be able to serialize itself into valid json" in {
-        net.liftweb.json.parse(db.jsonString)
+        net.liftweb.json.parse(db.json)
     }
     "A Feed Database" should "be able to correctly save and load itself" in {
         db.saveTo("example.feeddb")

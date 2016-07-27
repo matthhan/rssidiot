@@ -1,5 +1,6 @@
 package rssidiot
 import rssidiot.Types._
+import rssidiot.JsonLibraryAdapter._
 class Feed(val url:Url,
            val name:String,
            val historySize:Int = 100,
@@ -48,12 +49,12 @@ class Feed(val url:Url,
     def unreadArticles = this.articles.filter(_.unread)
 
     private def quote(s:String):String = "\"" + s + "\""
-    def jsonString():String = 
+    def json():String = 
         "{" + 
           "\"url\":" +  quote(this.url) + ","  +
           "\"name\":" + quote(this.name) + "," +
           "\"historySize\":" + this.historySize + "," +
-          "\"articleBuffer\":" + this.articleBuffer.jsonString + 
+          "\"articleBuffer\":" + this.articleBuffer.json+ 
         "}"
     def valid:Boolean = {
         //A feed is valid if we have already downloaded articles for it successfully 
@@ -68,13 +69,15 @@ class Feed(val url:Url,
 }
 
 object Feed {
-    def fromJsonElement(value:net.liftweb.json.JsonAST.JValue):Feed = {
+    def fromJson(json:String):Feed = {
+        val value = JsonLibraryAdapter.parse(json)
         implicit val formats = net.liftweb.json.DefaultFormats
         val obj = value.asInstanceOf[net.liftweb.json.JsonAST.JObject] 
         val res = new Feed(url = (obj \ "url").extract[String],
                            name = (obj \ "name").extract[String],
                            historySize = (obj \ "historySize").extract[Int],
-                           articleBuffer = ArticleBuffer.fromJsonElement(obj \ "articleBuffer"))
+                           articleBuffer =  
+                               ArticleBuffer.fromJsonElement((obj \ "articleBuffer").json))
         return res    
     }
 }

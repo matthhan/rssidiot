@@ -1,5 +1,6 @@
 package rssidiot
 
+import JsonLibraryAdapter._
 import net.liftweb.json._
 
 class FeedDatabase {
@@ -14,19 +15,19 @@ class FeedDatabase {
     def listFeeds():List[Feed] = feeds
     def remove(f:Feed) {feeds = feeds filterNot(_ == f)}
     def saveTo(filename:String) { 
-        Utility.writeStringToFile(s = this.jsonString,filename = filename)
+        Utility.writeStringToFile(s = this.json,filename = filename)
     }
-    def jsonString():String = "[" + this.feeds.map(_.jsonString).reduce((x,y) => x + "," + y) + "]"
+    def json():String = "[" + this.feeds.map(_.json).reduce((x,y) => x + "," + y) + "]"
 }
 object FeedDatabase {
     def loadFrom(filename:String):FeedDatabase = { 
         val str = Utility.readStringFromFile(filename)
-        return FeedDatabase.parseFromJsonString(str)
+        return FeedDatabase.fromJson(str)
     }
-    private def parseFromJsonString(json:String):FeedDatabase = {
-        val ast = net.liftweb.json.parse(json)
+    private def fromJson(json:String):FeedDatabase = {
+        val ast = JsonLibraryAdapter.parse(json)
         val res = new FeedDatabase()
-        ast.children.map(Feed.fromJsonElement(_)).foreach(res += _)
+        ast.children.map(feedJson => Feed.fromJson(feedJson.json)).foreach(res += _)
         return res
     }
 }
