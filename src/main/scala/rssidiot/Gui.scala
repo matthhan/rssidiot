@@ -20,21 +20,9 @@ import scalafx.beans.value.ObservableValue
 import scalafx.beans.property.ReadOnlyObjectProperty
 
 
-import java.net.URI
-import java.io.File
-
-
 object Gui extends JFXApp {
-    InitialConfiguration.init
-    Utility.makeSureFolderExists(Utility.defaultDataFolder)
-    var db:FeedDatabase = null
-    if(new File(Utility.defaultFeedDatabaseFile).exists)
-        db = FeedDatabase.loadFrom(Utility.defaultFeedDatabaseFile)
-    else
-        db = new FeedDatabase
-    
-    JFXApp.userAgentStylesheet = "theme/theme.css"
-    db.fetchAllNewArticles
+    InitialConfiguration.initEnvironment
+    val db = InitialConfiguration.initFeedDatabase
 
     val makeArticleCells = { _:ListView[Article] =>
         new ListCell[Article] {
