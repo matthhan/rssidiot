@@ -18,7 +18,6 @@ import scalafx.geometry.Pos
 
 import scalafx.beans.value.ObservableValue
 
-import rssidiot.GuiHacks._
 
 object Gui extends JFXApp {
     InitialConfiguration.initEnvironment
@@ -44,7 +43,7 @@ object Gui extends JFXApp {
         selectionModel().selectedItem.onChange{ (_,_,newArticle) => 
             if(newArticle != null) {
                 newArticle.markAsRead
-                //implicit method from rssidiot.GuiHacks
+                import rssidiot.GuiHacks._
                 items.forceUpdate
             }
         }
