@@ -25,6 +25,7 @@ import java.io.File
 
 
 object Gui extends JFXApp {
+    InitialConfiguration.init
     Utility.makeSureFolderExists(Utility.defaultDataFolder)
     var db:FeedDatabase = null
     if(new File(Utility.defaultFeedDatabaseFile).exists)
