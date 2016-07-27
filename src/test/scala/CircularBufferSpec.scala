@@ -1,6 +1,5 @@
 import org.scalatest.FlatSpec
 import rssidiot.collection.CircularBuffer
-import rssidiot.JsonSerializable
 
 class CircularBufferSpec extends FlatSpec {
     "A CircularBuffer" should "store the last n inserted elements" in {

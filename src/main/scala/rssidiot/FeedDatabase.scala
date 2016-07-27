@@ -2,7 +2,7 @@ package rssidiot
 
 import net.liftweb.json._
 
-class FeedDatabase extends JsonSerializable{
+class FeedDatabase {
     private var feeds = List[Feed]()
     def add(feed:Feed) { 
         if(! (feeds contains feed)) {

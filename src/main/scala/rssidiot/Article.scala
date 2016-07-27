@@ -5,7 +5,7 @@ import scala.xml.NodeSeq
 class Article(val url:Url,
               private val _title:Title,
               var read:Boolean = false) 
-    extends JsonSerializable  {
+    {
     require(!(url contains '"'))
     require(url != null)
     require(_title != null)

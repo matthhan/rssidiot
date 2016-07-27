@@ -4,7 +4,7 @@ class Feed(val url:Url,
            val name:String,
            val historySize:Int = 100,
            private var articleBuffer:ArticleBuffer = null) 
-              extends JsonSerializable {
+              {
     require(!(name contains '"'))
     require(!(url contains '"'))
     require(url != null)
