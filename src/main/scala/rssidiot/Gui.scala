@@ -17,12 +17,13 @@ import scalafx.scene.input.KeyCode
 import scalafx.geometry.Pos
 
 import scalafx.beans.value.ObservableValue
-import scalafx.beans.property.ReadOnlyObjectProperty
 
+import rssidiot.GuiHacks._
 
 object Gui extends JFXApp {
     InitialConfiguration.initEnvironment
     val db = InitialConfiguration.initFeedDatabase
+    //TODO: raise alert panel if problem parsing json
 
     val makeArticleCells = { _:ListView[Article] =>
         new ListCell[Article] {
@@ -38,15 +39,13 @@ object Gui extends JFXApp {
             item.onChange(articleChangeListener)
         }
     }
-
     val articleView = new ListView[Article] {
         cellFactory = makeArticleCells
         selectionModel().selectedItem.onChange{ (_,_,newArticle) => 
             if(newArticle != null) {
                 newArticle.markAsRead
-                //This line is here only to trigger a changeEvent
-                items().prepend(null)
-                items() = items().drop(1)
+                //implicit method from rssidiot.GuiHacks
+                items.forceUpdate
             }
         }
     }
