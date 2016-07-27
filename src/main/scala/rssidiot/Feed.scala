@@ -1,13 +1,11 @@
 package rssidiot
 import rssidiot.Types._
 import rssidiot.JsonLibraryAdapter._
-class Feed(val url:Url,
-           val name:String,
+class Feed(val url:QuotelessString,
+           val name:QuotelessString,
            val historySize:Int = 100,
            private var articleBuffer:ArticleBuffer = null) 
               {
-    require(!(name contains '"'))
-    require(!(url contains '"'))
     require(url != null)
     require(name != null)
     require(!(url.isEmpty))

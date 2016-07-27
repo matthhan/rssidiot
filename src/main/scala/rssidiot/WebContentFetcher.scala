@@ -4,7 +4,7 @@ import scala.io.Source
 import scala.xml.XML
 import scala.xml.Elem
 object WebContentFetcher {
-    private def downloadString(url:Url,numTries:Int = 10):String = {
+    private def downloadString(url:String,numTries:Int = 10):String = {
             for(i <- 1 to 10) {
                 try {
                     return this.makeAttemptToDowloadString(url)
@@ -20,7 +20,7 @@ object WebContentFetcher {
             //Give up
             null
     }
-    private def makeAttemptToDowloadString(url:Url):String = {
+    private def makeAttemptToDowloadString(url:String):String = {
         System.err.println("Downloading from: " + url)
         try {
             return Source.fromURL(url).mkString
@@ -42,5 +42,5 @@ object WebContentFetcher {
             }
         }
     }
-    def fetchContentFrom(url:Url):Elem = parseToXml(downloadString(url))
+    def fetchContentFrom(url:String):Elem = parseToXml(downloadString(url))
 }
