@@ -1,7 +1,6 @@
 package rssidiot
 
 import JsonLibraryAdapter._
-import net.liftweb.json._
 
 class FeedDatabase {
     private var feeds = List[Feed]()

@@ -17,12 +17,10 @@ class ArticleBuffer(size:Int) extends CircularBuffer[Article](size) {
                 "}"
 }
 object ArticleBuffer {
-    def fromJsonElement(json:String):ArticleBuffer = {
+    def fromJson(json:String):ArticleBuffer = {
         val value = JsonLibraryAdapter.parse(json)
-        implicit val formats = net.liftweb.json.DefaultFormats
-        val obj = value.asInstanceOf[net.liftweb.json.JsonAST.JObject]
-        val res = new ArticleBuffer((obj \ "size").extract[Int])
-        val arr = (obj \ "content")
+        val res = new ArticleBuffer(value.getAttribute[Int]("size"))
+        val arr = value.getChildren("content")
         arr.children.map(a => Article.fromJson(a.json)).foreach(res += _)
         res
     }

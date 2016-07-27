@@ -40,11 +40,9 @@ object Article {
     }
     def fromJson(json:String):Article = {
         val value = JsonLibraryAdapter.parse(json)
-        implicit val formats = net.liftweb.json.DefaultFormats
-        val obj = value.asInstanceOf[net.liftweb.json.JsonAST.JObject]
-        val res = new Article(url = (obj \ "url").extract[String],
-                              _title = (obj \ "title").extract[String],
-                              read  = (obj \ "read").extract[Boolean])
+        val res = new Article(url = value.getAttribute[String]("url"),
+                              _title = value.getAttribute[String]("title"),
+                              read  = value.getAttribute[Boolean]("read"))
         return res
     }
 }

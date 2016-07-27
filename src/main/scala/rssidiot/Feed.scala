@@ -71,13 +71,11 @@ class Feed(val url:Url,
 object Feed {
     def fromJson(json:String):Feed = {
         val value = JsonLibraryAdapter.parse(json)
-        implicit val formats = net.liftweb.json.DefaultFormats
-        val obj = value.asInstanceOf[net.liftweb.json.JsonAST.JObject] 
-        val res = new Feed(url = (obj \ "url").extract[String],
-                           name = (obj \ "name").extract[String],
-                           historySize = (obj \ "historySize").extract[Int],
-                           articleBuffer =  
-                               ArticleBuffer.fromJsonElement((obj \ "articleBuffer").json))
+        val res = new Feed(
+            url = value.getAttribute[String]("url"),
+            name = value.getAttribute[String]("name"),
+            historySize = value.getAttribute[Int]("historySize"),
+            articleBuffer = ArticleBuffer.fromJson(value.getChild("articleBuffer").json)) 
         return res    
     }
 }
