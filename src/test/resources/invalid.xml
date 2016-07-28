@@ -1,0 +1,21 @@
+
+<rss>
+        <channel>
+                    <title>Testing RSS Feed</title>
+                            <item>
+                                            <title>New RSS Reader on the block</title>
+                                                        <link>https://matthhan.github.io/rssidiot/index.html</link>
+                                                                    <guid isPermaLink="false">https://matthhan.github.io/rssidiot/index.html</guid>
+                                                                            </item>
+                                                                                    <item>
+                                                                                                    <title>It's seriously really cool</title>
+                                                                                                                <link>https://en.wikipedia.org/wiki/Cool_(aesthetic)</link>
+                                                                                                                            <guid isPermaLink="false">https://en.wikipedia.org/wiki/Cool_(aesthetic)</guid>
+                                                                                                                                    </item>
+                                                                                                                                    <item><br><asjdofß19278/laskdfj>
+                                                                                                                                                            <title>Maybe try it out?</title>
+                                                                                                                                                                        <link>https://matthhan.github.io/rssidiot/test.rss</link>
+                                                                                                                                                                                    <guid isPermaLink="false">https://matthhan.github.io/rssidiot/test.rss</guid>
+                                                                                                                                                                                            </item>
+                                                                                                                                                                                                </channel>
+                                                                                                                                                                                            </rss>
