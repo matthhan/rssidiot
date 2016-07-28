@@ -25,7 +25,7 @@ object Utility {
         else if(osName.startsWith("Mac") || osName.startsWith("Darwin")) return OperatingSystem.MacOs
         else return OperatingSystem.Linux
     }
-    def defaultDataFolder():String = Utility.getOperatingSystem() match {
+    def defaultDataFolder:String = Utility.getOperatingSystem() match {
         //TODO: Determine reasonable default folders for MacOs and Windows
         case OperatingSystem.Linux => 
             System.getProperty("user.home") + "/.rssidiot/"
@@ -39,6 +39,6 @@ object Utility {
            file.mkdir 
         }
     }
-    def defaultFeedDatabaseFile():String = Utility.defaultDataFolder + "feeddb.json"
+    def defaultFeedDatabaseFile = Utility.defaultDataFolder + "feeddb.json"
 
 }
