@@ -8,6 +8,7 @@ class ArticleSpec extends FlatSpec {
         assert (a == b)
         assert (!( a == null))
         assert (!( null == a))
+        assert (!(a == 3))
     }
     it should "be marked as unread initially" in {
         var a = new Article("blub","bla")
@@ -20,6 +21,12 @@ class ArticleSpec extends FlatSpec {
     }
     it should "be parseable from an item xml node (acc. rss standard)" in {
         val a = Article.fromXmlItem(<item><title>atitle</title><link>alink</link></item>)
+        assert (a != null)
+        assert (a.title == "atitle")
+        assert (a.url == "alink")
+    }
+    it should "be parseable from an Atom std. style entry xml node" in {
+        val a = Article.fromXmlItem(<entry><title>atitle</title><link href="alink"></link></entry>)
         assert (a != null)
         assert (a.title == "atitle")
         assert (a.url == "alink")
