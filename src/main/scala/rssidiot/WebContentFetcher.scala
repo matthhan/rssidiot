@@ -37,9 +37,8 @@ object WebContentFetcher {
         try {
             XML.loadString(s)
         } catch{
-            case e:org.xml.sax.SAXParseException => {
-                null
-            }
+            case e:org.xml.sax.SAXParseException => null
+            case e:java.lang.NullPointerException => null
         }
     }
     def fetchContentFrom(url:String):Elem = parseToXml(downloadString(url))
