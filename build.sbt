@@ -18,3 +18,6 @@ enablePlugins(JavaAppPackaging)
 //This is necessary to build debian packages
 maintainer := "Matthias Hansen <matthias.hansen@rwth-aachen.de>"
 
+//Good for debugging the scalafx Gui. Without this, we have
+//To restart sbt each time we run the gui
+fork in run := true 
