@@ -26,11 +26,11 @@ object Utility {
         else return OperatingSystem.Linux
     }
     def defaultDataFolder:String = Utility.getOperatingSystem() match {
-        //TODO: Determine reasonable default folders for MacOs and Windows
+        //TODO: Determine reasonable default folder for Windows
         case OperatingSystem.Linux => 
             System.getProperty("user.home") + "/.rssidiot/"
         case OperatingSystem.MacOs => 
-            System.getProperty("user.home") +"/Library/ApplicationSupport/rssidiot/"
+            System.getProperty("user.home") +"/Library/Application Support/rssidiot/"
         case OperatingSystem.Windows => ""
     }
     def makeSureFolderExists(path:String) {
