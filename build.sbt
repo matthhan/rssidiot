@@ -13,7 +13,20 @@ mainClass in Compile := Some("rssidiot.Gui")
 
 scalacOptions ++= Seq("-deprecation","-feature")
 
+//For packaging as final apps
 enablePlugins(JavaAppPackaging)
+
+//specifically for packaging as windows or mac os apps
+enablePlugins(JDKPackagerPlugin)
+
+//Find os
+val iconGlob = sys.props("os.name").toLowerCase match {
+  case os if os.contains("mac") ⇒ ".icns"
+  case os if os.contains("win") ⇒ ".ico"
+  case _ ⇒ ".png"
+}
+
+jdkAppIcon := Some(file("src/main/resources/icon" + iconGlob))
 
 //This is necessary to build debian packages
 maintainer := "Matthias Hansen <matthias.hansen@rwth-aachen.de>"
