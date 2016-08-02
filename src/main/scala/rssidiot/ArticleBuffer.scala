@@ -2,16 +2,17 @@ package rssidiot
 import rssidiot.collection.CircularBuffer
 import rssidiot.JsonLibraryAdapter._
 class ArticleBuffer(size:Int) extends CircularBuffer[Article](size) {
-        def json = 
-            if(this.asArray.isEmpty) 
-                "{" +
-                    "\"size\":" + this.size + "," +
-                    "\"content\":[]" + 
-                "}"
-            else 
+    private def quote(s:String) = "\"" + s + "\""
+    def json = 
+        if(this.asArray.isEmpty) 
+            "{" +
+                quote("size")    + ":" + this.size + "," +
+                quote("content") + ":" + "[]" + 
+            "}"
+        else 
                 "{" + 
-                    "\"size\":" + this.size + "," +
-                    "\"content\":[" + 
+                    quote("size")    + ":" + this.size + "," +
+                    quote("content") + ":" + "[" + 
                     this.asArray.map(ar => ar.json).reduce((x,y) => x + "," + y) + 
                     "]" + 
                 "}"

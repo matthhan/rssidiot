@@ -34,10 +34,10 @@ class Feed(val url:QuotelessString,
     private def quote(s:String):String = "\"" + s + "\""
     def json():String = 
         "{" + 
-          "\"url\":" +  quote(this.url) + ","  +
-          "\"name\":" + quote(this.name) + "," +
-          "\"historySize\":" + this.historySize + "," +
-          "\"articleBuffer\":" + this.articleBuffer.json+ 
+            quote("url")           + ":" + quote(this.url) + ","   +
+            quote("name")          + ":" + quote(this.name) + ","  +
+            quote("historySize")   + ":" + this.historySize + ","  +
+            quote("articleBuffer") + ":" + this.articleBuffer.json + 
         "}"
     def valid:Boolean = {
         //A feed is valid if we have already downloaded articles for it successfully 
