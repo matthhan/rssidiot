@@ -112,7 +112,12 @@ object Gui extends JFXApp {
             newFeed.fetchNewArticles
             feedView.items() += newFeed
         } else {
-            //TODO: raise alert panel here
+            import scalafx.scene.control.Alert
+            import scalafx.scene.control.Alert.AlertType
+            (new Alert(AlertType.None) {
+                contentText = "Failed to create a new Feed.\n Make sure the chosen Url is valid."
+                buttonTypes = Seq(ButtonType.Cancel)
+            }).showAndWait()
         }
 
     }
