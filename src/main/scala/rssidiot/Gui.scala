@@ -115,8 +115,8 @@ object Gui extends JFXApp {
             import scalafx.scene.control.Alert
             import scalafx.scene.control.Alert.AlertType
             (new Alert(AlertType.None) {
-                contentText = "Failed to create a new Feed.\n Make sure the chosen Url is valid."
-                buttonTypes = Seq(ButtonType.Cancel)
+                contentText = "Failed to create a new Feed.\n Make sure the chosen URL is valid."
+                buttonTypes = Seq(ButtonType.OK)
             }).showAndWait()
         }
 
