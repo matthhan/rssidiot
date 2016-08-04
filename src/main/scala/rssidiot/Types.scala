@@ -11,6 +11,7 @@ object Types {
             case null => false
             case _ => false
         }
+        def < (that:QuotelessString):Boolean = this.s < that.s
         override def toString:String = this.s
     }
     implicit def stringToQuotelessString(s:String):QuotelessString = new QuotelessString(s.filter(_!='"'))

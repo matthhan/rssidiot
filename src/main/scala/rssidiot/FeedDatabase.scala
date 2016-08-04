@@ -15,6 +15,9 @@ class FeedDatabase {
         Utility.writeStringToFile(s = this.json,filename = filename)
     }
     def json:String = "[" + this.feeds.map(_.json).reduce((x,y) => x + "," + y) + "]"
+    def sort:Unit = {
+        this.feeds = this.feeds.sortWith((a,b) => a.name < b.name)
+    }
 }
 object FeedDatabase {
     def loadFrom(filename:String):FeedDatabase = { 
@@ -25,6 +28,7 @@ object FeedDatabase {
         val res = new FeedDatabase()
         val feedJsons = JsonLibraryAdapter.parse(json).children.map(_.json)
         feedJsons.map(Feed.fromJson(_)).foreach(res += _)
+        res.sort
         return res
     }
 }
