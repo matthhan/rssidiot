@@ -37,5 +37,8 @@ class FeedSpec extends FlatSpec {
     }
     //TODO implement this test
     it should "Be possible to apply autodiscovery to create a feed" in {
+        val feeds = Feed.withAutodiscovery(url="https://matthhan.github.io/rssidiot/index.html",name="Testfeed")
+        assertResult("https://matthhan.github.io/rssidiot/test.rss") { feeds(0).url }
+        assertResult("https://matthhan.github.io/rssidiot/atom.rss") { feeds(1).url }
     }
 }
