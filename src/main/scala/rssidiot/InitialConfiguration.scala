@@ -3,7 +3,7 @@ import scalafx.application.JFXApp
 import java.io.File
 object InitialConfiguration {
     def initEnvironment {
-        System.setProperty("http.agent","rssidiot/0.1")
+        System.setProperty("http.agent","Rssidiot/0.1" + " (Ubuntu; U; en)")
         Utility.makeSureFolderExists(Utility.defaultDataFolder)
         JFXApp.userAgentStylesheet = "theme/theme.css"
     }
