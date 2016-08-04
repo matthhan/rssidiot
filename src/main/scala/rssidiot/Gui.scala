@@ -21,9 +21,22 @@ import scalafx.beans.value.ObservableValue
 
 object Gui extends JFXApp {
     InitialConfiguration.initEnvironment
-    val db = InitialConfiguration.initFeedDatabase
+    var dbvar:FeedDatabase = _
+    try {
+        dbvar = InitialConfiguration.initFeedDatabase
+    } catch {
+        case e:Exception => {
+            import scalafx.scene.control.Alert
+            import scalafx.scene.control.Alert.AlertType
+            (new Alert(AlertType.None) {
+                contentText = "Failed to load database \n" + Utility.defaultFeedDatabaseFile + "is probably corrupted"
+                buttonTypes = Seq(ButtonType.OK)
+            }).showAndWait()
+            System.exit(0)
+        }
+    }
+    val db = dbvar
     db.sort
-    //TODO: raise alert panel if problem parsing json
 
     val makeArticleCells = { _:ListView[Article] =>
         new ListCell[Article] {
@@ -54,7 +67,7 @@ object Gui extends JFXApp {
         lis.remove(lis.indexOf(selItem))
     }
     val handlePlusButton = { _:ActionEvent =>
-        val dialog = new Dialog[Feed]{
+        val dialog = new Dialog[List[Feed]]{
             initOwner(stage) 
             title = "Feed Creation"
             headerText = "To create a new Feed, specify its Title and URL."
@@ -71,21 +84,17 @@ object Gui extends JFXApp {
             dialogPane().buttonTypes += new ButtonType("Confirm", ButtonData.OKDone)
             dialogPane().buttonTypes += ButtonType.Cancel
             resultConverter = { button =>
-                try {
-                    if(button.buttonData == ButtonData.OKDone)
-                        new Feed(name = titleField.text(),url = urlField.text())
-                    else null
-                } catch {
-                    case e:Exception => null
-                }
+                if(button.buttonData == ButtonData.OKDone)
+                    Feed.withAutodiscovery(name = titleField.text(),url = urlField.text())
+                else null
             }
         }
         dialog.showAndWait()
-        val newFeed = dialog.result()
-        if(newFeed != null && newFeed.valid) {
-            db.add(newFeed)
-            newFeed.fetchNewArticles
-            feedView.items() += newFeed
+        val newFeeds = dialog.result()
+        if(!newFeeds.isEmpty) {
+            db.add(newFeeds.head)
+            newFeeds.head.fetchNewArticles
+            feedView.items() += newFeeds.head
         } else {
             stage.alwaysOnTop = false
             import scalafx.scene.control.Alert
