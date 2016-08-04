@@ -1,0 +1,20 @@
+<rss>
+    <channel>
+        <title>Testing Atom Feed</title>
+        <item>
+            <title>Atom is a somewhat weird format</title>
+            <link href= "https://matthhan.github.io/rssidiot/index.html" />
+            <guid isPermaLink="false">https://matthhan.github.io/rssidiot/index.html</guid>
+        </item>
+        <item>
+            <title>But maybe we will also be able to handle it</title>
+            <link href="https://en.wikipedia.org/wiki/Cool_(aesthetic)" />
+            <guid isPermaLink="false">https://en.wikipedia.org/wiki/Cool_(aesthetic)</guid>
+        </item>
+        <item>
+            <title>Lets just hope for the best</title>
+            <link href="https://matthhan.github.io/rssidiot/test.rss" />
+            <guid isPermaLink="false">https://matthhan.github.io/rssidiot/test.rss</guid>
+        </item>
+    </channel>
+</rss>
