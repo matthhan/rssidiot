@@ -22,6 +22,7 @@ import scalafx.beans.value.ObservableValue
 object Gui extends JFXApp {
     InitialConfiguration.initEnvironment
     val db = InitialConfiguration.initFeedDatabase
+    db.sort
     //TODO: raise alert panel if problem parsing json
 
     val makeArticleCells = { _:ListView[Article] =>

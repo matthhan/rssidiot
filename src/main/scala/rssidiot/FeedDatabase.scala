@@ -28,7 +28,6 @@ object FeedDatabase {
         val res = new FeedDatabase()
         val feedJsons = JsonLibraryAdapter.parse(json).children.map(_.json)
         feedJsons.map(Feed.fromJson(_)).foreach(res += _)
-        res.sort
         return res
     }
 }
