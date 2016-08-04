@@ -38,38 +38,12 @@ object Gui extends JFXApp {
             item.onChange(articleChangeListener)
         }
     }
-    val articleView = new ListView[Article] {
-        cellFactory = makeArticleCells
-        selectionModel().selectedItem.onChange{ (_,_,newArticle) => 
-            if(newArticle != null) {
-                newArticle.markAsRead
-                import rssidiot.GuiHacks._
-                items.forceUpdate
-            }
-        }
-    }
     val handleFeedSelectionChange:(Any,Any,Feed) => Unit = (_,_,newlySelectedFeed) =>  {
         if(newlySelectedFeed != null) {
             articleView.items().clear
             articleView.items() ++= newlySelectedFeed.unreadArticles
         }
     }
-    val feedView = new ListView[Feed] { 
-        items() ++= db.listFeeds 
-        vgrow = Priority.Always
-        selectionModel().
-            selectedItem.
-            onChange(handleFeedSelectionChange)
-        selectionModel().selectFirst
-        cellFactory = { _ =>
-            new ListCell[Feed] {
-                item.onChange{ (_,_,feed) =>
-                    if(feed != null) text = feed.name else text = ""
-                }
-            }
-        }
-    }
-    
     val handleMinusButton = { _:ActionEvent =>
         val selItem = feedView
                         .selectionModel()
@@ -112,63 +86,93 @@ object Gui extends JFXApp {
             newFeed.fetchNewArticles
             feedView.items() += newFeed
         } else {
+            stage.alwaysOnTop = false
             import scalafx.scene.control.Alert
             import scalafx.scene.control.Alert.AlertType
+            import scalafx.stage.Modality
             (new Alert(AlertType.None) {
                 contentText = "Failed to create a new Feed.\n Make sure the chosen URL is valid."
                 buttonTypes = Seq(ButtonType.OK)
+                initModality(Modality.ApplicationModal)
             }).showAndWait()
+            stage.alwaysOnTop = true
         }
 
     }
     val handleKeyPress = {(event:KeyEvent) => 
-            if(event.eventType == KeyEvent.KeyPressed) {
-                var spacePressed = false
-                event.code match {
-                    case KeyCode.Space => spacePressed = true
-                    //The third line in all of these cases should do nothing.
-                    //But actually if the selected cell is the last selectable 
-                    //cell and selectNext is called then the cell will stay
-                    //selected, but not be highlighted anymore, which is a bug.
-                    //Therefore, we always select the same line we just selected
-                    //again, using the sm.select accessor
-                    case KeyCode.D => {
-                        val sm = feedView.selectionModel()
-                        sm.selectPrevious
-                        sm.select(sm.selectedIndex())
-                    }
-                    case KeyCode.F => {
-                        val sm = feedView.selectionModel()
-                        sm.selectNext
-                        sm.select(sm.selectedIndex())
-                    }
-                    case KeyCode.J => {
-                        val sm = articleView.selectionModel()
-                        sm.selectNext
-                        sm.select(sm.selectedIndex())
-                    }
-                    case KeyCode.K => {
-                        val sm = articleView.selectionModel()
-                        sm.selectPrevious
-                        sm.select(sm.selectedIndex())
-                    }
-                    case _ =>
+        if(event.eventType == KeyEvent.KeyPressed) {
+            var spacePressed = false
+            event.code match {
+                case KeyCode.Space => spacePressed = true
+                //The third line in all of these cases should do nothing.
+                //But actually if the selected cell is the last selectable 
+                //cell and selectNext is called then the cell will stay
+                //selected, but not be highlighted anymore, which is a bug.
+                //Therefore, we always select the same line we just selected
+                //again, using the sm.select accessor
+                case KeyCode.D => {
+                    val sm = feedView.selectionModel()
+                    sm.selectPrevious
+                    sm.select(sm.selectedIndex())
                 }
-                //TODO make this scroll lazily instead of eagerly
-                val selectedArticle = articleView.selectionModel().selectedItem()
-                val selectedFeed = feedView.selectionModel().selectedItem()
-                articleView.scrollTo(selectedArticle)
-                feedView.scrollTo(selectedFeed)
+                case KeyCode.F => {
+                    val sm = feedView.selectionModel()
+                    sm.selectNext
+                    sm.select(sm.selectedIndex())
+                }
+                case KeyCode.J => {
+                    val sm = articleView.selectionModel()
+                    sm.selectNext
+                    sm.select(sm.selectedIndex())
+                }
+                case KeyCode.K => {
+                    val sm = articleView.selectionModel()
+                    sm.selectPrevious
+                    sm.select(sm.selectedIndex())
+                }
+                case _ =>
+            }
+            //TODO make this scroll lazily instead of eagerly
+            val selectedArticle = articleView.selectionModel().selectedItem()
+            val selectedFeed = feedView.selectionModel().selectedItem()
+            articleView.scrollTo(selectedArticle)
+            feedView.scrollTo(selectedFeed)
 
-                if(spacePressed) {
-                    hostServices.showDocument(selectedArticle.url)
-                    Thread.sleep(300)
-                    stage.requestFocus
+            if(spacePressed) {
+                hostServices.showDocument(selectedArticle.url)
+                Thread.sleep(300)
+                stage.requestFocus
+            }
+        }
+        event.consume
+    }
+
+    val articleView = new ListView[Article] {
+        cellFactory = makeArticleCells
+        selectionModel().selectedItem.onChange{ (_,_,newArticle) => 
+            if(newArticle != null) {
+                newArticle.markAsRead
+                import rssidiot.GuiHacks._
+                items.forceUpdate
+            }
+        }
+    }
+    val feedView = new ListView[Feed] { 
+        items() ++= db.listFeeds 
+        vgrow = Priority.Always
+        selectionModel().
+            selectedItem.
+            onChange(handleFeedSelectionChange)
+        selectionModel().selectFirst
+        cellFactory = { _ =>
+            new ListCell[Feed] {
+                item.onChange{ (_,_,feed) =>
+                    if(feed != null) text = feed.name else text = ""
                 }
             }
-            event.consume
         }
-
+    }
+    
     /*The .asInstanceOf[scalafx.scene.Node] is necessary
     because the variables are otherwise not converted to 
     the correct type. This appears to be a problem with
