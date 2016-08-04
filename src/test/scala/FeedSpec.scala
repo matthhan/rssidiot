@@ -35,4 +35,7 @@ class FeedSpec extends FlatSpec {
         assert(f.feed.valid)
         assert(!(new Feed("Bla","Blub")).valid)
     }
+    //TODO implement this test
+    it should "Be possible to apply autodiscovery to create a feed" in {
+    }
 }
