@@ -43,7 +43,8 @@ class Feed(val url:QuotelessString,
         //A feed is valid if we have already downloaded articles for it successfully 
         //or if we can do so now
         try {
-            return (articleBuffer.asArray.length > 0) || (downloadNewArticles.length > 0) 
+            return ((articleBuffer.asArray.length > 0) || 
+                    (this.parseArticles(this.downloadNewArticles).length > 0)) 
         } catch {
             //Something went wrong downloading new articles
             case e:Exception => return false
