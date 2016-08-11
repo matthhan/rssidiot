@@ -93,7 +93,7 @@ object Feed {
       .filter(feedContentTypes contains _.getAttributeByName("type"))
       .map(_.getAttributeByName("href"))
       .map(discovered => if (discovered.startsWith("http")) discovered
-      else if (url.last == '/') url + discovered
-      else url + '/' + discovered)
+                         else if (url.last == '/') url + discovered
+                         else url + '/' + discovered)
   }
 }
