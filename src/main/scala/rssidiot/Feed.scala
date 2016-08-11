@@ -63,7 +63,7 @@ object Feed {
     }
     def withAutodiscovery(name:QuotelessString,url:QuotelessString):List[Feed] = {
         try {
-            val feed = new Feed(name,url)
+            val feed = new Feed(url,name)
             if(!feed.valid) throw new IllegalArgumentException("name or url not valid")
             return List(feed)
         } catch {
@@ -89,6 +89,8 @@ object Feed {
             .getElementsByName("link",true)
             .filter(feedContentTypes contains _.getAttributeByName("type"))
             .map(_.getAttributeByName("href"))
-            .map(discovered => if(discovered.startsWith("http")) discovered else url + discovered)
+            .map(discovered => if(discovered.startsWith("http")) discovered 
+                               else if(url.last == '/') url + discovered
+                               else url + '/' + discovered)
     }
 }
