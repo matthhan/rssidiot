@@ -18,6 +18,7 @@ scalacOptions ++= Seq("-deprecation","-feature")
 enablePlugins(JavaAppPackaging)
 
 //specifically for packaging as windows or mac os apps
+//invoke with jdkPackager:packageBin
 enablePlugins(JDKPackagerPlugin)
 
 //Find os
