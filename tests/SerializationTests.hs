@@ -8,12 +8,13 @@ import Data.Aeson
 import Data.Maybe
 import Feed
 import State
+import Cursor
 
 exampleArticle = Article "Hay" "orange.website.com/5" False
 
 exampleFeed = Feed "Orange Website" "orange.website.com/rss" [exampleArticle]
 
-exampleState = State [exampleFeed]
+exampleState = State{feeds = [exampleFeed], cursorFeeds = Cursor 1, cursorArticles = Cursor 1}
 
 testSerialization = testGroup "Serialization" [
   roundTripSerializeExampleArticle,
