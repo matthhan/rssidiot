@@ -1,0 +1,12 @@
+[package]
+name = "rssidiot"
+version = "0.1.0"
+authors = ["Matthias Hansen <matthias.hansen@rwth-aachen.de>"]
+[lib]
+name = "librssidiot"
+path = "src/lib.rs"
+[[bin]]
+name = "rssidiot"
+path = "src/main.rs"
+
+[dependencies]

@@ -1,7 +1,2 @@
-#Haskell stuff
-.cabal-sandbox
-cabal.sandbox.config
-dist
-# Vim temp files
-*~
-
+/target
+**/*.rs.bk
