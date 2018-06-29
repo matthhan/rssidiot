@@ -1,5 +1,6 @@
 mod article;
 mod feed;
+mod circular_buffer;
 use article::Article;
 
 pub fn run() {
