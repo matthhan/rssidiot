@@ -10,3 +10,5 @@ name = "rssidiot"
 path = "src/main.rs"
 
 [dependencies]
+serde = "1.0.0"
+serde_json = "1.0.0"
