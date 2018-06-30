@@ -5,7 +5,7 @@ use serde::ser::{Serialize, Serializer, SerializeSeq};
 pub struct CircularBuffer<T> where T:Clone {
     
     last_inserted: usize,
-    backing_structure:Vec<T>,
+    backing_structure: Vec<T>,
     size:usize,
 }
 impl<T> CircularBuffer<T>  where T:Clone {
@@ -38,21 +38,21 @@ impl<T> CircularBuffer<T>  where T:Clone {
         self.backing_structure.len()
     }
 }
-impl<T> IntoIterator for CircularBuffer<T> where T:Clone {
+impl<'a, T> IntoIterator for &'a CircularBuffer<T> where T:Clone {
     type Item = T;
-    type IntoIter = CircularBufferIterator<T>;
+    type IntoIter = CircularBufferIterator<'a, T>;
     fn into_iter(self) -> Self::IntoIter {
         let li = (self.last_inserted + 1) % self.size;
         CircularBufferIterator::new(self,li)
     }
 }
-pub struct CircularBufferIterator<T> where T:Clone {
-    buf: CircularBuffer<T>,
+pub struct CircularBufferIterator<'a, T:'a> where T:Clone {
+    buf: &'a CircularBuffer<T>,
     i: usize,
     done_iterating: bool,
 }
-impl<T> CircularBufferIterator<T> where T:Clone {
-    fn new(buf:CircularBuffer<T>,i:usize) -> CircularBufferIterator<T> {
+impl<'a, T> CircularBufferIterator<'a, T> where T:Clone {
+    fn new(buf:&'a CircularBuffer<T>,i:usize) -> CircularBufferIterator<'a, T> {
         CircularBufferIterator {
             i,
             buf,
@@ -60,7 +60,7 @@ impl<T> CircularBufferIterator<T> where T:Clone {
         }
     }
 }
-impl<T> Iterator for CircularBufferIterator<T> where T:Clone {
+impl<'a, T> Iterator for CircularBufferIterator<'a, T> where T:Clone {
     type Item = T;
     fn next(&mut self) -> Option<T> {
         if !self.done_iterating && self.buf.backing_structure.len() > 0 {
@@ -73,15 +73,15 @@ impl<T> Iterator for CircularBufferIterator<T> where T:Clone {
         }
     }
 }
-/*impl<T> serde::Serialize for CircularBuffer<T> where T: Clone + serde::Serialize {
+impl<'a, T> serde::Serialize for CircularBuffer<T> where T: Clone + serde::Serialize {
     fn serialize<S>(&self, serializer:S) -> Result<S::Ok,S::Error> where S: serde::Serializer {
         let mut seq = serializer.serialize_seq(Some(self.len()))?;
-        for elem in self.to_iter() {
-            seq.serialize_element(elem)?;
+        for elem in self.into_iter() {
+            seq.serialize_element(&elem)?;
         }
         seq.end()
     }
-}*/
+}
 
 #[cfg(test)]
 mod circular_buffer_tests {
@@ -95,7 +95,7 @@ mod circular_buffer_tests {
     #[test]
     fn can_iterate() {
         let buf:CircularBuffer<i32> = CircularBuffer::new(100);
-        for i in buf {
+        for i in &buf {
             assert!(true)
         }
     }
@@ -122,13 +122,13 @@ mod circular_buffer_tests {
         }
         
     }
-    /*#[test]
+    #[test]
     fn can_be_serialized_and_deserialized_correctly() {
         let mut buf:CircularBuffer<i32> = CircularBuffer::new(10);
         for i in 1..105 {
             buf  = buf.add(i);
         }
-        let asStr = serde_json::to_string(&buf).unwrap();
-        println!("{}",asStr);
-    }*/
+        let as_str = serde_json::to_string(&buf).unwrap();
+        println!("{}",as_str);
+    }
 }
