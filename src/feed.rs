@@ -29,6 +29,7 @@ mod feed_tests {
         let fe = Feed::new("Example Feed".to_string(), "www.example.com".to_string());
         assert!(true)
     }
+    #[test]
     fn can_serialize_and_deserialize() {
         let fe = Feed::new("Example Feed".to_string(), "www.example.com".to_string());
         let as_str = serde_json::to_string(&fe).unwrap(); 
