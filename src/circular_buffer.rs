@@ -1,7 +1,6 @@
-extern crate serde;
 use serde::ser::{Serialize, Serializer, SerializeSeq};
 
-#[derive(Debug)]
+#[derive(Debug,Serialize,Deserialize,PartialEq,Eq)]
 pub struct CircularBuffer<T> where T:Clone {
     
     last_inserted: usize,
@@ -73,15 +72,6 @@ impl<'a, T> Iterator for CircularBufferIterator<'a, T> where T:Clone {
         }
     }
 }
-impl<'a, T> serde::Serialize for CircularBuffer<T> where T: Clone + serde::Serialize {
-    fn serialize<S>(&self, serializer:S) -> Result<S::Ok,S::Error> where S: serde::Serializer {
-        let mut seq = serializer.serialize_seq(Some(self.len()))?;
-        for elem in self.into_iter() {
-            seq.serialize_element(&elem)?;
-        }
-        seq.end()
-    }
-}
 
 #[cfg(test)]
 mod circular_buffer_tests {
@@ -129,6 +119,8 @@ mod circular_buffer_tests {
             buf  = buf.add(i);
         }
         let as_str = serde_json::to_string(&buf).unwrap();
-        println!("{}",as_str);
+        let from_str:CircularBuffer<i32> = serde_json::from_str(&as_str).unwrap();
+        assert_eq!(buf,from_str);
+
     }
 }

@@ -2,6 +2,8 @@ mod article;
 mod feed;
 mod circular_buffer;
 use article::Article;
+#[macro_use]
+extern crate serde_derive;
 extern crate serde;
 extern crate serde_json;
 

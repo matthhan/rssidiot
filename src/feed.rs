@@ -1,9 +1,10 @@
-use article;
+use article::Article;
+use circular_buffer::CircularBuffer;
 #[derive(Debug)]
 pub struct Feed {
     name: String,
     url: String,
-    art: article::Article,
+    articles: CircularBuffer<Article>,
 }
 
 #[cfg(test)]
