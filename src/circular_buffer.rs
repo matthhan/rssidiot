@@ -1,4 +1,3 @@
-use serde::ser::{Serialize, Serializer, SerializeSeq};
 
 #[derive(Debug,Serialize,Deserialize,PartialEq,Eq)]
 pub struct CircularBuffer<T> where T:Clone {
@@ -78,14 +77,9 @@ mod circular_buffer_tests {
     use circular_buffer::CircularBuffer;
     extern crate serde_json;
     #[test]
-    fn can_create() {
-        let buf:CircularBuffer<i32> = CircularBuffer::new(100);
-        assert!(true)
-    }
-    #[test]
     fn can_iterate() {
         let buf:CircularBuffer<i32> = CircularBuffer::new(100);
-        for i in &buf {
+        for _ in &buf {
             assert!(true)
         }
     }
