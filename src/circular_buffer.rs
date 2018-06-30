@@ -1,4 +1,5 @@
 
+use vector_extension::CanReplaceAtIndex;
 #[derive(Debug,Serialize,Deserialize,PartialEq,Eq)]
 pub struct CircularBuffer<T> where T:Clone {
     
@@ -16,21 +17,12 @@ impl<T> CircularBuffer<T>  where T:Clone {
     }
     pub fn add(self,thing: T) -> CircularBuffer<T> {
         let last_inserted_new = (self.last_inserted + 1) % self.size;
-        let backing_structure_new = CircularBuffer::place_in_vec(self.backing_structure,last_inserted_new,thing);
+        let backing_structure_new = self.backing_structure.replace_at_index(last_inserted_new,&|_| thing.clone());
         CircularBuffer {
             size: self.size,
             last_inserted: last_inserted_new,
             backing_structure: backing_structure_new,
         }
-    }
-    fn place_in_vec(vec:Vec<T>,ind:usize,thing:T) -> Vec<T> {
-       let mut newvec = vec.to_vec(); 
-        if ind == newvec.len() {
-            newvec.push(thing)
-        } else {
-            newvec[ind] = thing
-        }
-        newvec
     }
     fn len(&self) -> usize {
         self.backing_structure.len()
