@@ -1,6 +1,6 @@
 
-use vector_extension::CanReplaceAtIndex;
-#[derive(Debug,Serialize,Deserialize,PartialEq,Eq)]
+use can_replace_at_index::CanReplaceAtIndex;
+#[derive(Debug,Serialize,Deserialize,PartialEq,Eq,Clone)]
 pub struct CircularBuffer<T> where T:Clone {
     
     last_inserted: usize,
@@ -24,7 +24,7 @@ impl<T> CircularBuffer<T>  where T:Clone {
             backing_structure: backing_structure_new,
         }
     }
-    fn len(&self) -> usize {
+    pub fn len(&self) -> usize {
         self.backing_structure.len()
     }
 }
@@ -64,6 +64,11 @@ impl<'a, T> Iterator for CircularBufferIterator<'a, T> where T:Clone {
     }
 }
 
+impl<T> CanReplaceAtIndex<T> for CircularBuffer<T> where T:Clone {
+    fn replace_at_index(&self,ind:usize,f:&Fn(Option<T>) -> T) -> CircularBuffer<T> {
+        CircularBuffer { backing_structure: self.backing_structure.replace_at_index(ind,f), ..*self }
+    }
+}
 #[cfg(test)]
 mod circular_buffer_tests {
     use circular_buffer::CircularBuffer;
@@ -110,3 +115,5 @@ mod circular_buffer_tests {
 
     }
 }
+
+

@@ -3,7 +3,8 @@ mod feed;
 mod circular_buffer;
 mod application;
 mod cursor;
-mod vector_extension;
+mod can_replace_at_index;
+
 use article::Article;
 #[macro_use]
 extern crate serde_derive;
