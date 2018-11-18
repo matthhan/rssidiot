@@ -7,9 +7,9 @@ use can_replace_at_index::CanReplaceAtIndex;
 
 #[derive(Debug,Serialize,Deserialize,PartialEq,Eq,Clone)]
 pub struct Feed {
-    name: String,
-    url: String,
-    articles: CircularBuffer<Article>,
+    pub name: String,
+    pub url: String,
+    pub articles: CircularBuffer<Article>,
 }
 impl Feed {
     pub fn new(name:String,url:String) -> Feed {
@@ -25,6 +25,12 @@ impl Feed {
     }
     pub fn len(&self) -> usize {
         self.articles.len()
+    }
+    pub fn add_article(self,art:Article) -> Feed {
+        Feed {
+            articles: self.articles.add(art),
+            ..self
+        }
     }
 }
 #[cfg(test)]

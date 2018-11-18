@@ -1,0 +1,13 @@
+[
+  {
+    "name":"Example news",
+    "url":"example.com",
+    "articles":{"last_inserted":1,"backing_structure":[{"title":"hello world","url":"example.com/art/1","read":false},{"title":"hello world2","url":"example.com/art/2","read":false}], "size":100}
+  },
+  {
+    "name":"Example news2",
+    "url":"example.com",
+    "articles":{"last_inserted":1,"backing_structure":[{"title":"hello world3","url":"example.com/art/1","read":false},{"title":"hello world4","url":"example.com/art/2","read":false}],"size":100}
+  }
+]
+

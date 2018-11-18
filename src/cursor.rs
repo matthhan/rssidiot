@@ -32,6 +32,11 @@ impl Cursor {
             Cursor { position: Some(self.max_position.unwrap()), ..self }
         }
     }
+    pub fn change_coll(self, coll_len:usize) -> Cursor {
+        let new_pos = if self.position.filter(|&x| x < coll_len).is_some() { self.position } else { None };
+        let nms = if coll_len > 0 { Some(coll_len) } else { None };
+        Cursor { position: new_pos, max_position: nms }
+    }
 }
 
 #[cfg(test)]

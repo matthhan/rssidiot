@@ -1,9 +1,9 @@
 
 #[derive(Debug,Clone,Serialize,Deserialize,Eq,PartialEq)]
 pub struct Article {
-    title: String,
+    pub title: String,
     url: String,
-    read: bool,
+    pub read: bool,
 }
 impl Article {
     pub fn set_read(self) -> Article {
