@@ -3,7 +3,7 @@ name = "rssidiot"
 version = "0.1.0"
 authors = ["Matthias Hansen <matthias.hansen@rwth-aachen.de>"]
 [lib]
-name = "librssidiot"
+name = "rssidiot"
 path = "src/lib.rs"
 [[bin]]
 name = "rssidiot"
