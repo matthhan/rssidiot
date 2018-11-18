@@ -1,5 +1,5 @@
-extern crate librssidiot;
+extern crate rssidiot;
 
 fn main() {
-    librssidiot::run();
+    rssidiot::run();
 }
