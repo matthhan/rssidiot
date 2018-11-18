@@ -69,16 +69,10 @@ pub fn right_pad(a: String, siz:usize) -> String {
 #[cfg(test)]
 mod tests {
     use render_state::render_state;
-    use render_state::right_pad;
     use application::ApplicationState;
-    use feed::Feed;
-    use article::Article;
-    use example_state::construct_example_state;
     #[test]
     fn can_render_a_state() {
-        let state = construct_example_state();
-        render_state(&state);
-        let state = state.feed_cursor_down();
-        render_state(&state);
+        let st = ApplicationState::load_from_file("src/example_state.json".to_string());
+        render_state(&st);
     }
 }
